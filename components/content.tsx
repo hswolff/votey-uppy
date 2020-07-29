@@ -25,6 +25,7 @@ function generateItem() {
   };
 }
 
+// @ts-expect-error
 const items = [...Array(10).keys()].map((i) => generateItem());
 
 function Item({ item }) {
