@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import SignIn from 'components/sign-in';
 import Content from 'components/content';
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
         <h1 className="text-center text-6xl">votey-uppy</h1>
       </main>
 
+      <SignIn />
       <Content />
     </div>
   );
