@@ -16,6 +16,7 @@
     "postcss-preset-env": "^6.7.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-query": "^2.5.7-tsnext.1",
     "tailwindcss": "^1.6.0"
   },
   "devDependencies": {

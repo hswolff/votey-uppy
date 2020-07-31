@@ -1,8 +1,12 @@
 import Head from 'next/head';
 import SignIn from 'components/sign-in';
 import Content from 'components/content';
+import AddItemForm from 'components/AddItemForm';
+import { useItems } from 'hooks/api-hooks';
 
 export default function Home() {
+  const { data, isSuccess } = useItems();
+
   return (
     <div>
       <Head>
@@ -15,7 +19,8 @@ export default function Home() {
       </main>
 
       <SignIn />
-      <Content />
+      <AddItemForm />
+      {isSuccess && <Content items={data} />}
     </div>
   );
 }

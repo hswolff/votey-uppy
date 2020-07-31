@@ -21,18 +21,19 @@ function ExampleSession({ session }) {
 }
 
 export default function SignIn() {
-  const [session, loading] = useSession();
+  const [session] = useSession();
 
   return (
-    <div>
+    <div className="max-w-xs mx-auto m-6 pb-2 border-b flex justify-between">
       {/* <ExampleSession session={session} /> */}
-      {session ? `Welcome ${session.user.name}` : null}
-      <br />
-      {session ? (
-        <button onClick={signout}>Sign out</button>
-      ) : (
-        <button onClick={() => signin('github')}>Sign in</button>
-      )}
+      <div>{session ? `Welcome ${session.user.name}` : null}</div>
+      <div>
+        {session ? (
+          <button onClick={signout}>Sign out</button>
+        ) : (
+          <button onClick={() => signin('github')}>Sign in</button>
+        )}
+      </div>
     </div>
   );
 }
