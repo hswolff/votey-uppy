@@ -20,7 +20,7 @@ export default function Home() {
 
       <SignIn />
       <AddItemForm />
-      {isSuccess && <Content items={data} />}
+      {isSuccess && data && <Content items={data} />}
     </div>
   );
 }

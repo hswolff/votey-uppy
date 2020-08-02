@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/client';
 import { signin, signout } from 'next-auth/client';
 
+// @ts-expect-error
 function ExampleSession({ session }) {
   return (
     <p>
@@ -29,7 +30,7 @@ export default function SignIn() {
       <div>{session ? `Welcome ${session.user.name}` : null}</div>
       <div>
         {session ? (
-          <button onClick={signout}>Sign out</button>
+          <button onClick={() => signout()}>Sign out</button>
         ) : (
           <button onClick={() => signin('github')}>Sign in</button>
         )}

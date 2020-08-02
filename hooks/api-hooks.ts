@@ -1,10 +1,13 @@
 import { useQuery, useMutation, queryCache } from 'react-query';
+import Item from 'data/data-types';
 
 export function useItems() {
-  return useQuery('items', () => fetch('/api/items').then((res) => res.json()));
+  return useQuery<Item[], unknown, string>('items', () =>
+    fetch('/api/items').then((res) => res.json())
+  );
 }
 
-const addItem = (body) => {
+const addItem = (body: Partial<Item>) => {
   return fetch('/api/items', {
     method: 'POST',
     body: JSON.stringify(body),
@@ -20,9 +23,13 @@ export function useAddItem() {
 }
 
 export function useClearItems() {
-  return useMutation(() => fetch('/api/items', { method: 'DELETE' }), {
-    onSuccess() {
-      queryCache.invalidateQueries('items');
-    },
-  });
+  return useMutation(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (e_: unknown) => fetch('/api/items', { method: 'DELETE' }),
+    {
+      onSuccess() {
+        queryCache.invalidateQueries('items');
+      },
+    }
+  );
 }

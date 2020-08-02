@@ -1,10 +1,12 @@
-function Item({ item }) {
+import ItemInterface from 'data/data-types';
+
+function Item({ item }: { item: ItemInterface }) {
   return (
     <div className="border border-gray-400 rounded-md shadow my-8 p-4 flex flex-col sm:flex-row hover:border-gray-500 ease-linear transition duration-150">
       <div className="mx-auto pr-4 text-center">
         <div className="text-4xl align-top sm:-mt-1">⬆️</div>
         <div className="border border-blue-800 bg-blue-300 rounded max-">
-          {item.votes}
+          {item.votes.length}
         </div>
       </div>
       <div className="content flex-grow">
@@ -19,7 +21,7 @@ function Item({ item }) {
   );
 }
 
-export default function Content({ items }) {
+export default function Content({ items }: { items: ItemInterface[] }) {
   return (
     <ul className="container mx-auto my-2 max-w-6xl">
       {items.map((item) => (

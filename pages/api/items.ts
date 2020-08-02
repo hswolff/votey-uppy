@@ -1,17 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-
 import faker from 'faker';
+import Item, { ItemCategory } from 'data/data-types';
 
 faker.seed(1);
 
-function generateItem({ title = null, description = null } = {}) {
+function generateItem({ title = null, description = null } = {}): Item {
   return {
     _id: faker.random.uuid(),
     title: title ?? faker.lorem.words(),
     description: description ?? faker.lorem.paragraph(),
-    created: faker.date.past().toUTCString(),
-    updated: faker.date.past().toUTCString(),
-    category: faker.random.arrayElement(['Tutorial', 'Opinion', 'Vlog']),
+    created: faker.date.past(),
+    updated: faker.date.past(),
+    category: faker.random.arrayElement([
+      ItemCategory.Tutorial,
+      ItemCategory.Opinion,
+      ItemCategory.Vlog,
+    ]),
     createdBy: faker.random.uuid(),
     status: faker.random.arrayElement([
       'open',
@@ -19,20 +23,17 @@ function generateItem({ title = null, description = null } = {}) {
       'declined',
       'completed',
     ]),
-    votes: faker.random.number(100),
-    // votes: {
-    //   up: [],
-    //   down: [],
-    // },
+    votes: [],
   };
 }
 
-let postRequests = [];
+let postRequests: Item[] = [];
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   const items = postRequests
     // @ts-expect-error
     .concat([...Array(10).keys()])
+    // @ts-ignore
     .map((item) => generateItem(typeof item === 'number' ? undefined : item));
 
   if (req.method === 'GET') {
