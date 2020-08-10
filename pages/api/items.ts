@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import faker from 'faker';
 import Item, { ItemCategory } from 'data/data-types';
 import { getDatabase } from 'data/database';
-import { getUserFromSession } from 'data/user';
+import { getUserFromSession } from 'data/user-dao';
 
 function generateItem({
   title = faker.lorem.words(),

@@ -1,15 +1,7 @@
 import { getSession } from 'next-auth/client';
 import { getDatabase } from './database';
 import { NextApiRequest } from 'next';
-
-export interface User {
-  _id: string;
-  name: string;
-  username: string;
-  image: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { User } from './data-types';
 
 export async function getUserFromSession({
   req,

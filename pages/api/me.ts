@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUserFromSession } from 'data/user';
+import { getUserFromSession } from 'data/user-dao';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   let user;

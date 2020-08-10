@@ -22,3 +22,12 @@ export default interface Item {
   status: 'open' | 'accepted' | 'declined' | 'completed';
   votes: ItemVote[];
 }
+
+export interface User {
+  _id: string;
+  name: string;
+  username: string;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
