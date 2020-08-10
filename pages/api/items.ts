@@ -1,22 +1,25 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import faker from 'faker';
 import Item, { ItemCategory } from 'data/data-types';
+import { getDatabase } from 'data/database';
+import { getUserFromSession } from 'data/user';
 
-faker.seed(1);
-
-function generateItem({ title = null, description = null } = {}): Item {
+function generateItem({
+  title = faker.lorem.words(),
+  description = faker.lorem.paragraph(),
+  createdBy = faker.random.uuid(),
+} = {}): Partial<Item> {
   return {
-    _id: faker.random.uuid(),
-    title: title ?? faker.lorem.words(),
-    description: description ?? faker.lorem.paragraph(),
-    created: faker.date.past(),
-    updated: faker.date.past(),
+    title,
+    description,
+    created: new Date(),
+    updated: new Date(),
     category: faker.random.arrayElement([
       ItemCategory.Tutorial,
       ItemCategory.Opinion,
       ItemCategory.Vlog,
     ]),
-    createdBy: faker.random.uuid(),
+    createdBy,
     status: faker.random.arrayElement([
       'open',
       'accepted',
@@ -27,32 +30,45 @@ function generateItem({ title = null, description = null } = {}): Item {
   };
 }
 
-let postRequests: Item[] = [];
-
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  const items = postRequests
-    // @ts-expect-error
-    .concat([...Array(10).keys()])
-    // @ts-ignore
-    .map((item) => generateItem(typeof item === 'number' ? undefined : item));
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const db = await getDatabase();
+  const collection = db.collection('items');
 
   if (req.method === 'GET') {
+    const items = await collection.find().sort({ _id: -1 }).toArray();
     return res.status(200).json(items);
   }
 
+  if (req.method === 'POST') {
+    let user;
+
+    try {
+      user = await getUserFromSession({ req });
+    } catch {
+      res.status(401).end();
+      return;
+    }
+
+    const { title, description } = JSON.parse(req.body);
+
+    if (!title || !description) {
+      res.status(400).json({ status: 'malformed content' });
+      return;
+    }
+
+    const newItem = generateItem({ title, description, createdBy: user._id });
+
+    const { result } = await collection.insertOne(newItem);
+
+    if (!result.ok) {
+      res.status(500).json({ status: 'unable to add item' });
+      return;
+    }
+
+    return res.status(201).json({ status: 'created' });
+  }
+
   if (req.method === 'DELETE') {
-    postRequests = [];
-    return res.status(200).send('deleted');
+    res.end();
   }
-
-  const parsedBody = JSON.parse(req.body);
-
-  postRequests.unshift(parsedBody);
-
-  // don't memory leak
-  if (postRequests.length > 9) {
-    postRequests = [];
-  }
-
-  res.status(200).send('added');
 };

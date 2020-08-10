@@ -1,32 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getDatabase } from 'data/database';
-import { getSession } from 'next-auth/client';
+import { getUserFromSession } from 'data/user';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req });
+  let user;
 
-  if (!session) {
+  try {
+    user = await getUserFromSession({ req });
+  } catch {
     res.status(401).end();
     return;
   }
-
-  const { accessToken } = session;
-
-  const db = await getDatabase();
-
-  const sessionDocument = await db
-    .collection('sessions')
-    .findOne({ accessToken });
-
-  if (!sessionDocument) {
-    res.status(401).end();
-    return;
-  }
-
-  const userId = sessionDocument.userId;
 
   if (req.method === 'GET') {
-    const user = await db.collection('users').findOne({ _id: userId });
     return res.status(200).json(user);
   }
 

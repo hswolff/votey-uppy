@@ -7,7 +7,7 @@ export function useItems() {
   );
 }
 
-const addItem = (body: Partial<Item>) => {
+const addItem = (body: Pick<Item, 'title' | 'description'>) => {
   return fetch('/api/items', {
     method: 'POST',
     body: JSON.stringify(body),
