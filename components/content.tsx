@@ -1,5 +1,5 @@
-import { Item as ItemInterface } from 'data/data-types';
-import { useAddVote } from 'hooks/api-hooks';
+import { Item as ItemInterface } from 'services/data-types';
+import { useAddVote } from 'services/api-hooks';
 
 export default function Content({ items }: { items: ItemInterface[] }) {
   return (

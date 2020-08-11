@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/client';
-import { useAddItem, useClearItems } from 'hooks/api-hooks';
+import { useAddItem, useClearItems } from 'services/api-hooks';
 
 export default function AddItemForm() {
   const [session] = useSession();

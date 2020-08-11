@@ -1,5 +1,5 @@
 import Content from 'components/content';
-import { useItems } from 'hooks/api-hooks';
+import { useItems } from 'services/api-hooks';
 
 export default function Home() {
   const { data, isSuccess } = useItems();

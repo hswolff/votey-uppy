@@ -1,5 +1,5 @@
 import { useQuery, useMutation, queryCache } from 'react-query';
-import { Item } from 'data/data-types';
+import { Item } from 'services/data-types';
 
 export function useItems() {
   return useQuery<Item[], unknown, string>('items', () =>
