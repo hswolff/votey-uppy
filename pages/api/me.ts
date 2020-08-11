@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getUserFromSession } from 'services/user-dao';
+import { getVotesForUser } from 'services/item-dao';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   let user;
@@ -12,7 +13,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'GET') {
-    return res.status(200).json(user);
+    const itemsVotedFor = await getVotesForUser(user._id);
+
+    const response = {
+      ...user,
+      votes: itemsVotedFor,
+    };
+
+    return res.status(200).json(response);
   }
 
   if (req.method === 'POST') {
