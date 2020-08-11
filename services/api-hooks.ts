@@ -45,3 +45,15 @@ export function useAddVote(itemId: string) {
     }
   );
 }
+
+export function useRemoveVote(itemId: string) {
+  return useMutation(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (e_: unknown) => fetch(`/api/vote/${itemId}`, { method: 'DELETE' }),
+    {
+      onSuccess() {
+        queryCache.invalidateQueries('items');
+      },
+    }
+  );
+}

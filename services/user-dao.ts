@@ -14,8 +14,10 @@ export async function getUserFromSession({
     throw new Error();
   }
 
-  const { accessToken } = session;
+  return getUserFromAccessToken(session.accessToken);
+}
 
+async function getUserFromAccessToken(accessToken: string): Promise<User> {
   const db = await getDatabase();
 
   const sessionDocument = await db

@@ -8,6 +8,7 @@ declare module 'next-auth/client' {
       name: string;
       email: string;
       image: string;
+      _id: string;
     };
     accessToken: string;
     expires: string;

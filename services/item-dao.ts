@@ -30,23 +30,62 @@ export async function addVoteToItem({
   const collection = db.collection('items');
 
   const itemObjectId = new ObjectId(itemIdString);
+  const userObjectId = new ObjectId(user._id);
 
-  const existingVote = await collection.find({
-    _id: itemObjectId,
-    'votes.userId': new ObjectId(user._id),
-  });
+  const existingVote = await collection
+    .find({
+      _id: itemObjectId,
+      'votes.userId': userObjectId,
+    })
+    .count();
 
   if (existingVote) {
     throw new Error('Already voted');
   }
 
-  return await collection.updateOne(
+  return collection.updateOne(
     { _id: itemObjectId },
     {
       $push: {
         votes: {
-          userId: new ObjectId(user._id),
+          userId: userObjectId,
           created: new Date(),
+        },
+      },
+    }
+  );
+}
+
+export async function removeVoteFromItem({
+  itemId: itemIdString,
+  user,
+}: {
+  itemId: string;
+  user: User;
+}) {
+  const db = await getDatabase();
+  const collection = db.collection('items');
+
+  const itemObjectId = new ObjectId(itemIdString);
+  const userObjectId = new ObjectId(user._id);
+
+  const existingVote = await collection
+    .find({
+      _id: itemObjectId,
+      'votes.userId': userObjectId,
+    })
+    .count();
+
+  if (!existingVote) {
+    throw new Error('No vote found');
+  }
+
+  return await collection.updateOne(
+    { _id: itemObjectId },
+    {
+      $pull: {
+        votes: {
+          userId: userObjectId,
         },
       },
     }

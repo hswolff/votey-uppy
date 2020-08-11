@@ -12,6 +12,18 @@ const options = {
   ],
 
   database: process.env.DATABASE_URL,
+
+  callbacks: {
+    async session(session, user) {
+      return Promise.resolve({
+        ...session,
+        user: {
+          ...session.user,
+          _id: user.id,
+        },
+      });
+    },
+  },
 };
 
 export default (req, res) => NextAuth(req, res, options);

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getUserFromSession } from 'services/user-dao';
-import { addVoteToItem } from 'services/item-dao';
+import { addVoteToItem, removeVoteFromItem } from 'services/item-dao';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   let user;
@@ -12,15 +12,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  if (req.method !== 'POST') {
-    return res.status(404).end();
-  }
-
   const itemId = req.query.itemId as string;
 
-  const result = await addVoteToItem({ itemId, user });
+  if (req.method === 'POST') {
+    const { result } = await addVoteToItem({
+      itemId,
+      user,
+    });
 
-  console.log(result);
+    res.status(201).send(result.ok);
+    return;
+  }
 
-  res.status(201).send('lol' + itemId);
+  if (req.method === 'DELETE') {
+    const { result } = await removeVoteFromItem({
+      itemId,
+      user,
+    });
+
+    res.status(200).send(result.ok);
+    return;
+  }
+
+  res.status(404).end();
 };

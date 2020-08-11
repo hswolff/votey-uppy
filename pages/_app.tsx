@@ -7,7 +7,7 @@ import Layout from 'components/Layout';
 function MyApp({ Component, pageProps }: AppProps) {
   const { session } = pageProps;
   return (
-    <Provider options={{ site: process.env.SITE }} session={session}>
+    <Provider session={session}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
