@@ -11,7 +11,7 @@ export interface ItemVote {
   created: Date;
 }
 
-export default interface Item {
+export interface Item {
   _id: ObjectId;
   title: string;
   description: string;
@@ -24,7 +24,7 @@ export default interface Item {
 }
 
 export interface User {
-  _id: string;
+  _id: ObjectId;
   name: string;
   username: string;
   image: string;

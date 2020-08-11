@@ -1,4 +1,5 @@
-import ItemInterface from 'data/data-types';
+import { Item as ItemInterface } from 'data/data-types';
+import { useAddVote } from 'hooks/api-hooks';
 
 export default function Content({ items }: { items: ItemInterface[] }) {
   return (
@@ -13,10 +14,16 @@ export default function Content({ items }: { items: ItemInterface[] }) {
 }
 
 function Item({ item }: { item: ItemInterface }) {
+  const [vote] = useAddVote(item._id);
   return (
     <div className="border border-gray-400 rounded-md shadow p-4 flex flex-col sm:flex-row hover:border-gray-500 ease-linear transition duration-150">
       <div className="mx-auto pr-4 text-center">
-        <div className="text-4xl align-top sm:-mt-1">⬆️</div>
+        <div
+          className="text-4xl align-top sm:-mt-1 cursor-pointer"
+          onClick={vote}
+        >
+          ⬆️
+        </div>
         <div className="border border-blue-800 bg-blue-300 rounded">
           {item.votes.length}
         </div>

@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import faker from 'faker';
-import Item, { ItemCategory } from 'data/data-types';
+import { Item, ItemCategory } from 'data/data-types';
 import { getDatabase } from 'data/database';
 import { getUserFromSession } from 'data/user-dao';
+import { getAllItems } from 'data/item-dao';
 
 function generateItem({
   title = faker.lorem.words(),
@@ -35,8 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const collection = db.collection('items');
 
   if (req.method === 'GET') {
-    const items = await collection.find().sort({ _id: -1 }).toArray();
-    return res.status(200).json(items);
+    return res.status(200).json(await getAllItems());
   }
 
   if (req.method === 'POST') {

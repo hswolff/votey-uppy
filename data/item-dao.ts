@@ -1,0 +1,44 @@
+import { getDatabase } from './database';
+import { Item, User } from './data-types';
+import { ObjectId } from 'mongodb';
+
+export async function getAllItems(): Promise<Item[]> {
+  const db = await getDatabase();
+  const collection = db.collection('items');
+
+  return await collection.find().sort({ _id: -1 }).toArray();
+}
+
+export async function addVoteToItem({
+  itemId: itemIdString,
+  user,
+}: {
+  itemId: string;
+  user: User;
+}) {
+  const db = await getDatabase();
+  const collection = db.collection('items');
+
+  const itemObjectId = new ObjectId(itemIdString);
+
+  const existingVote = await collection.find({
+    _id: itemObjectId,
+    'votes.userId': new ObjectId(user._id),
+  });
+
+  if (existingVote) {
+    throw new Error('Already voted');
+  }
+
+  return await collection.updateOne(
+    { _id: itemObjectId },
+    {
+      $push: {
+        votes: {
+          userId: new ObjectId(user._id),
+          created: new Date(),
+        },
+      },
+    }
+  );
+}
