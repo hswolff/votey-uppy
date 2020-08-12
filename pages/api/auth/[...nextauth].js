@@ -13,6 +13,10 @@ const options = {
 
   database: process.env.DATABASE_URL,
 
+  session: {
+    jwt: true,
+  },
+
   callbacks: {
     async session(session, user) {
       return Promise.resolve({
@@ -22,6 +26,15 @@ const options = {
           _id: user.id,
         },
       });
+    },
+    async jwt(token, user) {
+      let response = token;
+
+      if (user?.id) {
+        response = { ...token, id: user?.id };
+      }
+
+      return Promise.resolve(response);
     },
   },
 };

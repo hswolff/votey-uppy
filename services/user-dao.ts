@@ -2,6 +2,7 @@ import { getSession } from 'next-auth/client';
 import { getDatabase } from './database';
 import { NextApiRequest } from 'next';
 import { User } from './data-types';
+import { ObjectId } from 'mongodb';
 
 export async function getUserFromSession({
   req,
@@ -14,7 +15,7 @@ export async function getUserFromSession({
     throw new Error();
   }
 
-  return getUserFromAccessToken(session.accessToken);
+  return getUserFromId(session.user._id);
 }
 
 async function getUserFromAccessToken(accessToken: string): Promise<User> {
@@ -34,6 +35,20 @@ async function getUserFromAccessToken(accessToken: string): Promise<User> {
 
   if (!user) {
     throw new Error();
+  }
+
+  return user;
+}
+
+async function getUserFromId(userId: string): Promise<User> {
+  const db = await getDatabase();
+
+  const user = await db
+    .collection('users')
+    .findOne({ _id: new ObjectId(userId) });
+
+  if (!user) {
+    throw new Error('No user found');
   }
 
   return user;
