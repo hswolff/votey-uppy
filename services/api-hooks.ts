@@ -1,4 +1,4 @@
-import { useQuery, useMutation, queryCache } from 'react-query';
+import { useQuery, useMutation, queryCache, QueryOptions } from 'react-query';
 import { Item } from 'services/data-types';
 
 const defaultQueryFn = (requestPath: string) =>
@@ -6,8 +6,8 @@ const defaultQueryFn = (requestPath: string) =>
 
 // queries
 
-export function useItems() {
-  return useQuery<Item[], string, string>('/api/items', defaultQueryFn);
+export function useItems<Result = Item[]>(options?: QueryOptions<Result>) {
+  return useQuery<Result, string>('/api/items', defaultQueryFn, options);
 }
 
 export function useMeData() {
