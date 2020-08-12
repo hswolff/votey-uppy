@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { Item as ItemInterface } from 'services/data-types';
 import { useAddVote, useRemoveVote } from 'services/api-hooks';
 import { useSession } from 'next-auth/client';
@@ -15,21 +16,27 @@ export default function Content({ items }: { items: ItemInterface[] }) {
 }
 
 function Item({ item }: { item: ItemInterface }) {
-  const [addVote] = useAddVote(item._id);
-  const [removeVote] = useRemoveVote(item._id);
   const [session] = useSession();
   const hasVoted =
     item.votes.find((vote) => vote.userId === session?.user._id) != null;
 
+  const [addVote, addData] = useAddVote(item._id);
+  const [removeVote, removeData] = useRemoveVote(item._id);
+
+  const isLoading = addData.isLoading || removeData.isLoading;
+
   return (
     <div className="border border-gray-400 rounded-md shadow p-4 flex flex-col sm:flex-row hover:border-gray-500 ease-linear transition duration-150">
-      <div className="mx-auto pr-4 text-center">
-        <div
-          className="text-4xl align-top sm:-mt-1 cursor-pointer"
+      <div data-testid="vote-wrapper" className="mx-auto pr-4 text-center">
+        <button
+          className={classNames('text-4xl align-top sm:-mt-1 cursor-pointer', {
+            'animate-ping': isLoading,
+          })}
           onClick={hasVoted ? removeVote : addVote}
+          disabled={isLoading}
         >
           {hasVoted ? '✅' : '⬆️'}
-        </div>
+        </button>
         <div className="border border-blue-800 bg-blue-300 rounded">
           {item.votes.length}
         </div>

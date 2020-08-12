@@ -1,11 +1,15 @@
 import { useQuery, useMutation, queryCache } from 'react-query';
 import { Item } from 'services/data-types';
 
+// queries
+
 export function useItems() {
-  return useQuery<Item[], unknown, string>('items', () =>
+  return useQuery<Item[], string, string>('items', () =>
     fetch('/api/items').then((res) => res.json())
   );
 }
+
+// mutations
 
 export function useAddItem() {
   const addItem = (body: Pick<Item, 'title' | 'description'>) => {
