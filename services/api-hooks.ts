@@ -1,12 +1,17 @@
 import { useQuery, useMutation, queryCache } from 'react-query';
 import { Item } from 'services/data-types';
 
+const defaultQueryFn = (requestPath: string) =>
+  fetch(requestPath).then((res) => res.json());
+
 // queries
 
 export function useItems() {
-  return useQuery<Item[], string, string>('items', () =>
-    fetch('/api/items').then((res) => res.json())
-  );
+  return useQuery<Item[], string, string>('/api/items', defaultQueryFn);
+}
+
+export function useMeData() {
+  return useQuery('/api/me', defaultQueryFn);
 }
 
 // mutations
@@ -21,7 +26,7 @@ export function useAddItem() {
 
   return useMutation(addItem, {
     onSuccess() {
-      queryCache.invalidateQueries('items');
+      queryCache.invalidateQueries('/api/items');
     },
   });
 }
@@ -32,7 +37,7 @@ export function useClearItems() {
     (e_: unknown) => fetch('/api/items', { method: 'DELETE' }),
     {
       onSuccess() {
-        queryCache.invalidateQueries('items');
+        queryCache.invalidateQueries('/api/items');
       },
     }
   );
@@ -44,8 +49,8 @@ export function useAddVote(itemId: string) {
     (e_: unknown) => fetch(`/api/vote/${itemId}`, { method: 'POST' }),
     {
       onSuccess() {
-        queryCache.invalidateQueries('items');
-        queryCache.invalidateQueries('me');
+        queryCache.invalidateQueries('/api/items');
+        queryCache.invalidateQueries('/api/me');
       },
     }
   );
@@ -57,8 +62,8 @@ export function useRemoveVote(itemId: string) {
     (e_: unknown) => fetch(`/api/vote/${itemId}`, { method: 'DELETE' }),
     {
       onSuccess() {
-        queryCache.invalidateQueries('items');
-        queryCache.invalidateQueries('me');
+        queryCache.invalidateQueries('/api/items');
+        queryCache.invalidateQueries('/api/me');
       },
     }
   );

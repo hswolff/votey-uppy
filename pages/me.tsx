@@ -1,9 +1,5 @@
-import { useQuery } from 'react-query';
+import { useMeData } from 'services/api-hooks';
 import ItemList from 'components/ItemList';
-
-function useMeData() {
-  return useQuery('me', () => fetch('/api/me').then((res) => res.json()));
-}
 
 export default function Me() {
   const { isSuccess, data } = useMeData();

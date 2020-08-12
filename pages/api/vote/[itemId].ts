@@ -14,6 +14,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const itemId = req.query.itemId as string;
 
+  await new Promise((resolve) => {
+    setTimeout(resolve, 1000);
+  });
+
   if (req.method === 'POST') {
     const { result } = await addVoteToItem({
       itemId,
