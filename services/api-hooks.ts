@@ -45,6 +45,7 @@ export function useAddVote(itemId: string) {
     {
       onSuccess() {
         queryCache.invalidateQueries('items');
+        queryCache.invalidateQueries('me');
       },
     }
   );
@@ -57,6 +58,7 @@ export function useRemoveVote(itemId: string) {
     {
       onSuccess() {
         queryCache.invalidateQueries('items');
+        queryCache.invalidateQueries('me');
       },
     }
   );
