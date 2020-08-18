@@ -19,7 +19,7 @@ export interface Item {
   updated: Date;
   category: ItemCategory;
   createdBy: ObjectId;
-  status: 'open' | 'accepted' | 'declined' | 'completed';
+  status: 'pending' | 'open' | 'accepted' | 'declined' | 'completed';
   votes: ItemVote[];
 }
 
