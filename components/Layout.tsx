@@ -56,7 +56,7 @@ function Nav() {
       <ul className="flex flex-row space-x-2">
         {session && (
           <li>
-            <Link href="/me">
+            <Link href="/profile">
               <a>profile</a>
             </Link>
           </li>
