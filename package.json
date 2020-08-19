@@ -21,6 +21,9 @@
     "react-query": "^2.5.7-tsnext.1",
     "tailwindcss": "^1.6.0"
   },
+  "peerOptionalDependencies": {
+    "mongodb": "^3.6.0"
+  },
   "devDependencies": {
     "@types/classnames": "^2.2.10",
     "@types/faker": "^4.1.12",
