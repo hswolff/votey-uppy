@@ -20,7 +20,7 @@
 
 ### Milestone 2
 
-- [ ] Pull username from GitHub when user signs in
+- [x] Pull username from GitHub when user signs in
 - [ ] Make all forms of AddItemForm configurable
   - title, description, category, status
   - By default status is set to `pending`

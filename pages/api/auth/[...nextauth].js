@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import { getUserFromId, updateUser } from 'services/user-dao';
 
 const options = {
   site: process.env.SITE || 'http://localhost:3000',
@@ -23,15 +24,23 @@ const options = {
         ...session,
         user: {
           ...session.user,
+          username: user.username,
           _id: user.id,
         },
       });
     },
-    async jwt(token, user) {
+    async jwt(token, user, _account, profile) {
       let response = token;
 
       if (user?.id) {
-        response = { ...token, id: user?.id };
+        let dbUser = await getUserFromId(user.id);
+
+        if (!dbUser.username && profile.login) {
+          dbUser = await updateUser(user.id, { username: profile.login });
+          console.log({ dbUser });
+        }
+
+        response = { ...token, id: user?.id, username: dbUser.username };
       }
 
       return Promise.resolve(response);

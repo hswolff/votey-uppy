@@ -18,29 +18,7 @@ export async function getUserFromSession({
   return getUserFromId(session.user._id);
 }
 
-async function getUserFromAccessToken(accessToken: string): Promise<User> {
-  const db = await getDatabase();
-
-  const sessionDocument = await db
-    .collection('sessions')
-    .findOne({ accessToken });
-
-  if (!sessionDocument) {
-    throw new Error();
-  }
-
-  const userId = sessionDocument.userId;
-
-  const user = await db.collection('users').findOne({ _id: userId });
-
-  if (!user) {
-    throw new Error();
-  }
-
-  return user;
-}
-
-async function getUserFromId(userId: string): Promise<User> {
+export async function getUserFromId(userId: string): Promise<User> {
   const db = await getDatabase();
 
   const user = await db
@@ -52,4 +30,21 @@ async function getUserFromId(userId: string): Promise<User> {
   }
 
   return user;
+}
+
+export async function updateUser(
+  userId: string,
+  update: Record<string, any>
+): Promise<User> {
+  const db = await getDatabase();
+
+  const opResult = await db
+    .collection('users')
+    .findOneAndUpdate(
+      { _id: new ObjectId(userId) },
+      { $set: update },
+      { returnOriginal: false }
+    );
+
+  return opResult.value as User;
 }
