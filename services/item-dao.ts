@@ -2,11 +2,22 @@ import { getDatabase } from './database';
 import { Item, User } from './data-types';
 import { ObjectId } from 'mongodb';
 
-export async function getAllItems(): Promise<Item[]> {
+interface GetAllItems {
+  onlyPending: boolean;
+}
+export async function getAllItems({
+  onlyPending = false,
+}: GetAllItems): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');
 
-  return (await collection.find({}, { sort: { _id: -1 } }).toArray()) as Item[];
+  const query = onlyPending
+    ? { status: 'pending' }
+    : { status: { $ne: 'pending' } };
+
+  return (await collection
+    .find(query, { sort: { _id: -1 } })
+    .toArray()) as Item[];
 }
 
 export async function getVotesForUser(userId: string): Promise<Item[]> {

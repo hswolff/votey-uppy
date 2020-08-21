@@ -44,9 +44,10 @@ function Item({ item }: { item: ItemInterface }) {
       <div className="content flex-grow">
         <div className="font-bold text-xl leading-7">{item.title}</div>
         <div className="py-2">{item.description}</div>
-        <div className="metadata text-gray-700 text-sm">
-          <span className="inline-block mr-4">{item.category}</span>
+        <div className="metadata text-gray-700 text-sm space-x-2">
+          <span className="inline-block">{item.category}</span>
           <span>{item.created}</span>
+          <span>{item.status}</span>
         </div>
       </div>
     </div>

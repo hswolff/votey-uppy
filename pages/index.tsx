@@ -7,7 +7,7 @@ interface HomeProps {
 }
 
 export default function Home({ items }: HomeProps) {
-  const { data, isSuccess } = useItems({ initialData: items });
+  const { data, isSuccess } = useItems(undefined, { initialData: items });
 
   return <div>{isSuccess && data && <ItemList items={data} />}</div>;
 }

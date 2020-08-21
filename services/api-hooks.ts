@@ -1,4 +1,5 @@
 import { useQuery, useMutation, queryCache, QueryConfig } from 'react-query';
+import queryString from 'query-string';
 import { Item, FormItem } from 'services/data-types';
 
 const defaultQueryFn = (requestPath: string) =>
@@ -6,8 +7,19 @@ const defaultQueryFn = (requestPath: string) =>
 
 // queries
 
-export function useItems<Result = Item[]>(options?: QueryConfig<Result>) {
-  return useQuery<Result, string>('/api/items', defaultQueryFn, options);
+interface ItemFilters {
+  status?: Item['status'];
+}
+export function useItems<Result = Item[]>(
+  filters?: ItemFilters,
+  options?: QueryConfig<Result>
+) {
+  const query = filters ? `?${queryString.stringify(filters)}` : '';
+  return useQuery<Result, string>(
+    `/api/items${query}`,
+    defaultQueryFn,
+    options
+  );
 }
 
 export function useMeData() {

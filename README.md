@@ -24,16 +24,22 @@
 - [x] Make all forms of AddItemForm configurable
   - title, description, category
   - By default status is set to `pending`
-  - Don't show pending in main feed
-- [ ] Allow admin to view pending ideas and change their status
+- [x] Allow admin to view pending ideas
   - Create admin flag on User
-- [ ] Support for editing an existing Item
-  - Only for Admins
+  - Don't show pending in main feed
+- [ ] Allow Admins to edit an existing Item
+  - Able to promote `pending` items to `open`
 - [ ] Make description field take in Markdown and render as markdown
 - [ ] Create standalone Item page
-- [ ] Revise Item design
 
 ### Milestone 3
+
+- [ ] Revise Item design
+- [ ] Revise Profile design
+- [ ] Revise About design
+- [ ] Revise Home page design
+
+### Milestone 4
 
 - [ ] Let use edit their own Item while it's still 'pending'
 - [ ] Make homepage sortable in asc/desc order by:

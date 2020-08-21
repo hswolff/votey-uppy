@@ -34,16 +34,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await getDatabase();
   const collection = db.collection('items');
 
+  let user;
+  try {
+    user = await getUserFromSession({ req });
+  } catch {} // eslint-disable-line no-empty
+
   if (req.method === 'GET') {
-    return res.status(200).json(await getAllItems());
+    return res
+      .status(200)
+      .json(await getAllItems({ onlyPending: user?.role === 'admin' }));
   }
 
   if (req.method === 'POST') {
-    let user;
-
-    try {
-      user = await getUserFromSession({ req });
-    } catch {
+    if (!user) {
       res.status(401).end();
       return;
     }

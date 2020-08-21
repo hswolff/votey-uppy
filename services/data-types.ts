@@ -30,6 +30,7 @@ export interface User {
   image: string;
   createdAt: Date;
   updatedAt: Date;
+  role: 'admin';
 }
 
 export interface FormItem extends Pick<Item, 'title' | 'description'> {
