@@ -22,7 +22,7 @@
 
 - [x] Pull username from GitHub when user signs in
 - [ ] Make all forms of AddItemForm configurable
-  - title, description, category, status
+  - title, description, category
   - By default status is set to `pending`
   - Don't show pending in main feed
 - [ ] Allow admin to view pending ideas and change their status

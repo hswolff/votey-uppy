@@ -1,21 +1,40 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/client';
 import { useAddItem, useClearItems } from 'services/api-hooks';
+import { Item, ItemCategory } from 'services/data-types';
+
+interface FormData extends Pick<Item, 'title' | 'description'> {
+  category?: ItemCategory;
+}
+
+const initialState = {
+  title: '',
+  description: '',
+  category: undefined,
+};
 
 export default function AddItemForm() {
   const [session] = useSession();
 
-  const [title, setTitle] = useState('');
+  const [formData, rawSetFormData] = useState<FormData>(initialState);
+  const setFormData = (next: Partial<FormData>) =>
+    rawSetFormData((current) => ({
+      ...current,
+      ...next,
+    }));
+
   const [mutate] = useAddItem();
   const [clearItems] = useClearItems();
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
+
     mutate({
-      title,
+      title: formData.title,
       description: `Thank you ${session.user.name} for the idea!`,
     });
-    setTitle('');
+
+    setFormData(initialState);
   };
 
   if (!session) {
@@ -30,8 +49,8 @@ export default function AddItemForm() {
       <input
         type="text"
         className="border"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={formData.title}
+        onChange={(e) => setFormData({ title: e.target.value })}
       />
       <div className="flex flex-row  mt-2">
         <button
