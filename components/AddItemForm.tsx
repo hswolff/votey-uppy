@@ -1,40 +1,46 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/client';
-import { useAddItem, useClearItems } from 'services/api-hooks';
-import { Item, ItemCategory } from 'services/data-types';
-
-interface FormData extends Pick<Item, 'title' | 'description'> {
-  category?: ItemCategory;
-}
+import { useAddItem } from 'services/api-hooks';
+import { FormItem, ItemCategory } from 'services/data-types';
 
 const initialState = {
   title: '',
   description: '',
-  category: undefined,
+  category: null,
 };
 
 export default function AddItemForm() {
   const [session] = useSession();
 
-  const [formData, rawSetFormData] = useState<FormData>(initialState);
-  const setFormData = (next: Partial<FormData>) =>
+  const [formData, rawSetFormData] = useState<FormItem>(initialState);
+  const setFormData = (next: Partial<FormItem>) =>
     rawSetFormData((current) => ({
       ...current,
       ...next,
     }));
 
-  const [mutate] = useAddItem();
-  const [clearItems] = useClearItems();
+  const [error, setError] = useState('');
 
-  const submitForm = (e: React.SyntheticEvent) => {
+  const [mutate, { isLoading: isLoadingMutation }] = useAddItem();
+
+  const submitForm = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    mutate({
-      title: formData.title,
-      description: `Thank you ${session.user.name} for the idea!`,
-    });
+    if (isLoadingMutation) {
+      return;
+    }
+
+    setError('');
+
+    if (Object.values(formData).some((val) => !val)) {
+      setError('Please fill out form');
+      return;
+    }
+
+    mutate(formData);
 
     setFormData(initialState);
+    setError('');
   };
 
   if (!session) {
@@ -46,30 +52,48 @@ export default function AddItemForm() {
       className="flex flex-col mx-auto max-w-sm border border-gray-400 rounded p-2"
       onSubmit={submitForm}
     >
-      <input
-        type="text"
-        className="border"
-        value={formData.title}
-        onChange={(e) => setFormData({ title: e.target.value })}
-      />
+      {error && <p>{error}</p>}
+      <fieldset className="flex flex-col w-full mx-auto space-y-4">
+        <input
+          type="text"
+          autoFocus
+          className="border p-2"
+          placeholder="title"
+          value={formData.title}
+          onChange={(e) => setFormData({ title: e.target.value })}
+        />
+        <textarea
+          className="border p-2 resize-none"
+          value={formData.description}
+          placeholder="description"
+          onChange={(e) => setFormData({ description: e.target.value })}
+        />
+        <select
+          className="border"
+          value={formData.category || ''}
+          onChange={(e) =>
+            setFormData({ category: e.target.value as ItemCategory })
+          }
+        >
+          <option value="">Select category</option>
+          {Object.entries(ItemCategory).map(([key, value]) => (
+            <option key={value} value={value}>
+              {key}
+            </option>
+          ))}
+        </select>
+      </fieldset>
+
       <div className="flex flex-row  mt-2">
         <button
-          className={`${buttonStyles} flex-grow`}
+          className="p-1 border bg-gray-400 shadow-sm flex-grow"
           type="submit"
           onClick={submitForm}
+          disabled={isLoadingMutation}
         >
           Add
-        </button>
-        <button
-          type="button"
-          className={`${buttonStyles} ml-2`}
-          onClick={clearItems}
-        >
-          X
         </button>
       </div>
     </form>
   );
 }
-
-const buttonStyles = 'p-1 border bg-gray-400 shadow-sm';

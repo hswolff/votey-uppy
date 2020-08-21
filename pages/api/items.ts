@@ -5,28 +5,27 @@ import { getDatabase } from 'services/database';
 import { getUserFromSession } from 'services/user-dao';
 import { getAllItems } from 'services/item-dao';
 
+type PartialItem = Partial<Item>;
+
 function generateItem({
   title = faker.lorem.words(),
   description = faker.lorem.paragraph(),
+  category = faker.random.arrayElement([
+    ItemCategory.Tutorial,
+    ItemCategory.Opinion,
+    ItemCategory.Vlog,
+  ]),
+  status = 'pending',
   createdBy = faker.random.uuid(),
-} = {}): Partial<Item> {
+}: PartialItem = {}): PartialItem {
   return {
     title,
     description,
     created: new Date(),
     updated: new Date(),
-    category: faker.random.arrayElement([
-      ItemCategory.Tutorial,
-      ItemCategory.Opinion,
-      ItemCategory.Vlog,
-    ]),
+    category,
     createdBy,
-    status: faker.random.arrayElement([
-      'open',
-      'accepted',
-      'declined',
-      'completed',
-    ]),
+    status,
     votes: [],
   };
 }
@@ -49,14 +48,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    const { title, description } = JSON.parse(req.body);
+    const { title, description, category } = JSON.parse(req.body);
 
-    if (!title || !description) {
+    if (!title || !description || !category) {
       res.status(400).json({ status: 'malformed content' });
       return;
     }
 
-    const newItem = generateItem({ title, description, createdBy: user._id });
+    const newItem = generateItem({
+      title,
+      description,
+      category,
+      createdBy: user._id,
+    });
 
     const { result } = await collection.insertOne(newItem);
 
@@ -68,7 +72,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(201).json({ status: 'created' });
   }
 
-  if (req.method === 'DELETE') {
-    res.end();
-  }
+  res.end();
 };

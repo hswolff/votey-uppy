@@ -31,3 +31,7 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface FormItem extends Pick<Item, 'title' | 'description'> {
+  category: ItemCategory | null;
+}

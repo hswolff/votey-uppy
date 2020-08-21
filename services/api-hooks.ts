@@ -1,5 +1,5 @@
 import { useQuery, useMutation, queryCache, QueryConfig } from 'react-query';
-import { Item } from 'services/data-types';
+import { Item, FormItem } from 'services/data-types';
 
 const defaultQueryFn = (requestPath: string) =>
   fetch(requestPath).then((res) => res.json());
@@ -17,7 +17,7 @@ export function useMeData() {
 // mutations
 
 export function useAddItem() {
-  const addItem = (body: Pick<Item, 'title' | 'description'>) => {
+  const addItem = (body: FormItem) => {
     return fetch('/api/items', {
       method: 'POST',
       body: JSON.stringify(body),
@@ -29,18 +29,6 @@ export function useAddItem() {
       queryCache.invalidateQueries('/api/items');
     },
   });
-}
-
-export function useClearItems() {
-  return useMutation(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (e_: unknown) => fetch('/api/items', { method: 'DELETE' }),
-    {
-      onSuccess() {
-        queryCache.invalidateQueries('/api/items');
-      },
-    }
-  );
 }
 
 export function useAddVote(itemId: string) {
