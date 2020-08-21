@@ -18,7 +18,7 @@
     "postcss-preset-env": "^6.7.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-query": "^2.5.7-tsnext.1",
+    "react-query": "^2.8.0",
     "tailwindcss": "^1.6.0"
   },
   "peerOptionalDependencies": {
@@ -34,6 +34,6 @@
     "@typescript-eslint/parser": "^3.7.1",
     "eslint": "^7.5.0",
     "eslint-plugin-react": "^7.20.5",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.0"
   }
 }

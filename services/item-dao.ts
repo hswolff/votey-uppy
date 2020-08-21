@@ -6,16 +6,16 @@ export async function getAllItems(): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');
 
-  return await collection.find({}, { sort: { _id: -1 } }).toArray();
+  return (await collection.find({}, { sort: { _id: -1 } }).toArray()) as Item[];
 }
 
 export async function getVotesForUser(userId: string): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');
 
-  return await collection
+  return (await collection
     .find({ 'votes.userId': new ObjectId(userId) }, { sort: { _id: -1 } })
-    .toArray();
+    .toArray()) as Item[];
 }
 
 export async function addVoteToItem({
