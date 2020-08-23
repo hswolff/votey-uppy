@@ -1,4 +1,4 @@
-import AddItemForm from 'components/AddItemForm';
+import AddItemForm from 'components/ManageItemForm';
 
 export default function NewItem() {
   return (
