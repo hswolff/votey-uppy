@@ -19,6 +19,12 @@ export function useItems<Result = Item[]>(
   );
 }
 
+export function useItemById(itemId?: string) {
+  return useQuery(`/api/items/${itemId}`, defaultQueryFn, {
+    enabled: itemId != null,
+  });
+}
+
 export function useMeData() {
   return useQuery('/api/me', defaultQueryFn);
 }

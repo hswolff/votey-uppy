@@ -20,6 +20,13 @@ export async function getAllItems({
     .toArray()) as Item[];
 }
 
+export async function getItemById(itemId: string): Promise<Item> {
+  const db = await getDatabase();
+  const collection = db.collection('items');
+
+  return (await collection.findOne(new ObjectId(itemId))) as Item;
+}
+
 export async function getVotesForUser(userId: string): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');

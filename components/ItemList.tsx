@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import Link from 'next/link';
 import { Item as ItemInterface } from 'services/data-types';
 import { useAddVote, useRemoveVote } from 'services/api-hooks';
 import { useSession } from 'next-auth/client';
@@ -15,7 +16,7 @@ export default function Content({ items }: { items: ItemInterface[] }) {
   );
 }
 
-function Item({ item }: { item: ItemInterface }) {
+export function Item({ item }: { item: ItemInterface }) {
   const [session] = useSession();
   const hasVoted =
     item.votes.find((vote) => vote.userId === session?.user._id) != null;
@@ -42,7 +43,11 @@ function Item({ item }: { item: ItemInterface }) {
         </div>
       </div>
       <div className="content flex-grow">
-        <div className="font-bold text-xl leading-7">{item.title}</div>
+        <div className="font-bold text-xl leading-7">
+          <Link href="/item/[itemId]" as={`/item/${item._id}`}>
+            <a>{item.title}</a>
+          </Link>
+        </div>
         <div className="py-2">{item.description}</div>
         <div className="metadata text-gray-700 text-sm space-x-2">
           <span className="inline-block">{item.category}</span>

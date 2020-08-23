@@ -27,14 +27,15 @@
 - [x] Allow admin to view pending ideas
   - Create admin flag on User
   - Don't show pending in main feed
+- [x] Create standalone Item page
 - [ ] Allow Admins to edit an existing Item
   - Able to promote `pending` items to `open`
 - [ ] Make description field take in Markdown and render as markdown
-- [ ] Create standalone Item page
 
 ### Milestone 3
 
 - [ ] Revise Item design
+- [ ] Show the username of who created the Item in the item UI
 - [ ] Revise Profile design
 - [ ] Revise About design
 - [ ] Revise Home page design
