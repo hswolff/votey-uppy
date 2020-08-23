@@ -7,7 +7,7 @@ export default function Content({ items }: { items: ItemInterface[] }) {
   return (
     <ul className="container mx-auto my-2 space-y-8">
       {items.map((item) => (
-        <li key={item.title}>
+        <li key={item._id}>
           <Item item={item} />
         </li>
       ))}

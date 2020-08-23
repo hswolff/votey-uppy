@@ -1,17 +1,14 @@
 import { useQuery, useMutation, queryCache, QueryConfig } from 'react-query';
 import queryString from 'query-string';
-import { Item, FormItem } from 'services/data-types';
+import { Item, FormItem, ItemQueryFilters } from 'services/data-types';
 
 const defaultQueryFn = (requestPath: string) =>
   fetch(requestPath).then((res) => res.json());
 
 // queries
 
-interface ItemFilters {
-  status?: Item['status'];
-}
 export function useItems<Result = Item[]>(
-  filters?: ItemFilters,
+  filters?: ItemQueryFilters,
   options?: QueryConfig<Result>
 ) {
   const query = filters ? `?${queryString.stringify(filters)}` : '';

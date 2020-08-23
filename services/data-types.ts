@@ -11,6 +11,13 @@ export interface ItemVote {
   created: Date;
 }
 
+export type ItemStatus =
+  | 'pending'
+  | 'open'
+  | 'accepted'
+  | 'declined'
+  | 'completed';
+
 export interface Item {
   _id: ObjectId;
   title: string;
@@ -19,7 +26,7 @@ export interface Item {
   updated: Date;
   category: ItemCategory;
   createdBy: ObjectId;
-  status: 'pending' | 'open' | 'accepted' | 'declined' | 'completed';
+  status: ItemStatus;
   votes: ItemVote[];
 }
 
@@ -35,4 +42,10 @@ export interface User {
 
 export interface FormItem extends Pick<Item, 'title' | 'description'> {
   category: ItemCategory | null;
+}
+
+export interface ItemQueryFilters {
+  category?: ItemCategory;
+  userId?: string;
+  status?: ItemStatus;
 }

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import faker from 'faker';
-import { Item, ItemCategory } from 'services/data-types';
+import { Item, ItemCategory, ItemQueryFilters } from 'services/data-types';
 import { getDatabase } from 'services/database';
 import { getUserFromSession } from 'services/user-dao';
 import { getAllItems } from 'services/item-dao';
@@ -35,14 +35,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const collection = db.collection('items');
 
   let user;
+  let userIsAdmin = false;
   try {
     user = await getUserFromSession({ req });
+    userIsAdmin = user.role === 'admin';
   } catch {} // eslint-disable-line no-empty
 
   if (req.method === 'GET') {
-    return res
-      .status(200)
-      .json(await getAllItems({ onlyPending: user?.role === 'admin' }));
+    const query = (req.query as unknown) as ItemQueryFilters;
+
+    return res.status(200).json(
+      await getAllItems({
+        onlyPending: userIsAdmin && query.status === 'pending',
+      })
+    );
   }
 
   if (req.method === 'POST') {
