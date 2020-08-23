@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).json(
       await getAllItems({
-        onlyPending: userIsAdmin && query.status === 'pending',
+        onlyPending: userIsAdmin && query.status === ItemStatus.Pending,
       })
     );
   }

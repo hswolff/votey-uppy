@@ -1,5 +1,5 @@
 import { getDatabase } from './database';
-import { Item, User } from './data-types';
+import { Item, User, ItemStatus } from './data-types';
 import { ObjectId } from 'mongodb';
 
 interface GetAllItems {
@@ -12,8 +12,8 @@ export async function getAllItems({
   const collection = db.collection('items');
 
   const query = onlyPending
-    ? { status: 'pending' }
-    : { status: { $ne: 'pending' } };
+    ? { status: ItemStatus.Pending }
+    : { status: { $ne: ItemStatus.Pending } };
 
   return (await collection
     .find(query, { sort: { _id: -1 } })
