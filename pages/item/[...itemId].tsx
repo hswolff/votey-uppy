@@ -1,5 +1,5 @@
 import { useRouter } from 'next/dist/client/router';
-import { Item } from 'components/ItemList';
+import Item from 'components/Item';
 import { useItemById } from 'services/api-hooks';
 import ManageItemForm from 'components/ManageItemForm';
 
