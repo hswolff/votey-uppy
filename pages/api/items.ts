@@ -26,8 +26,8 @@ function generateItem({
   return {
     title,
     description,
-    created: new Date(),
-    updated: new Date(),
+    created: new Date().toISOString(),
+    updated: new Date().toISOString(),
     category,
     createdBy,
     status,

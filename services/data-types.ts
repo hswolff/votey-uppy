@@ -12,19 +12,19 @@ export interface ItemVote {
 }
 
 export enum ItemStatus {
-  Pending = 'pending',
-  Open = 'open',
-  Accepted = 'accepted',
-  Declined = 'declined',
-  Completed = 'completed',
+  Pending = 'Pending',
+  Open = 'Open',
+  Accepted = 'Accepted',
+  Declined = 'Declined',
+  Completed = 'Completed',
 }
 
 export interface Item {
   _id: ObjectId;
   title: string;
   description: string;
-  created: Date;
-  updated: Date;
+  created: string;
+  updated: string;
   category: ItemCategory;
   createdBy: ObjectId;
   status: ItemStatus;

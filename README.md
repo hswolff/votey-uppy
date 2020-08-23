@@ -33,8 +33,7 @@
 
 ### Milestone 3
 
-- [ ] Revise Item design
-- [ ] Show the username of who created the Item in the item UI
+- [x] Revise Item design
 - [ ] Revise Profile design
 - [ ] Revise About design
 - [ ] Revise Home page design
@@ -43,6 +42,7 @@
 
 ### Milestone 4
 
+- [ ] Show the username of who created the Item in the item UI
 - [ ] Let use edit their own Item while it's still 'pending'
 - [ ] Make homepage sortable in asc/desc order by:
   - Votes
@@ -54,3 +54,8 @@
   - Can change their username
   - Make sure their username change reflects in Item
 - [ ] Make description field take in Markdown and render as markdown
+
+### Milestone 5
+
+- [ ] Save the date of when an item moves status
+  - Such that you can see when an item was submitted and when it was completed
