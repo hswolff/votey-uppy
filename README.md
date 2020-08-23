@@ -28,7 +28,7 @@
   - Create admin flag on User
   - Don't show pending in main feed
 - [x] Create standalone Item page
-- [ ] Allow Admins to edit an existing Item
+- [x] Allow Admins to edit an existing Item
   - Able to promote `pending` items to `open`
 - [ ] Make description field take in Markdown and render as markdown
 
