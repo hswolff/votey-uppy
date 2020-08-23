@@ -30,7 +30,6 @@
 - [x] Create standalone Item page
 - [x] Allow Admins to edit an existing Item
   - Able to promote `pending` items to `open`
-- [ ] Make description field take in Markdown and render as markdown
 
 ### Milestone 3
 
@@ -54,3 +53,4 @@
 - [ ] Let use edit their profile details
   - Can change their username
   - Make sure their username change reflects in Item
+- [ ] Make description field take in Markdown and render as markdown
