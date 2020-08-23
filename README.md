@@ -39,6 +39,8 @@
 - [ ] Revise Profile design
 - [ ] Revise About design
 - [ ] Revise Home page design
+- [ ] Add docs on Add New Item page telling users it's been added to the queue and will be evaluated before being accepted
+- [ ] Show pending items on user's profile page
 
 ### Milestone 4
 

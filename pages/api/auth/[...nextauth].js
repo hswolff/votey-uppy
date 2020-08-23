@@ -24,8 +24,9 @@ const options = {
         ...session,
         user: {
           ...session.user,
-          username: user.username,
           _id: user.id,
+          username: user.username,
+          role: user.role,
         },
       });
     },
@@ -37,10 +38,14 @@ const options = {
 
         if (!dbUser.username && profile.login) {
           dbUser = await updateUser(user.id, { username: profile.login });
-          console.log({ dbUser });
         }
 
-        response = { ...token, id: user?.id, username: dbUser.username };
+        response = {
+          ...token,
+          id: user?.id,
+          username: dbUser.username,
+          role: dbUser.role,
+        };
       }
 
       return Promise.resolve(response);

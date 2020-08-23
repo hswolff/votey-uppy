@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/client';
-import { useAddItem } from 'services/api-hooks';
-import { FormItem, ItemCategory } from 'services/data-types';
+import { useAddItem, useEditItem } from 'services/api-hooks';
+import { FormItem, ItemCategory, Item, ItemStatus } from 'services/data-types';
 
 const initialState = {
   title: '',
@@ -9,10 +9,22 @@ const initialState = {
   category: null,
 };
 
-export default function AddItemForm() {
+interface Props {
+  mode?: 'add' | 'edit';
+  item?: Item;
+}
+
+export default function ManageItemForm({ mode = 'add', item }: Props) {
+  const isAdd = mode === 'add';
+  const isEdit = mode === 'edit';
+
   const [session] = useSession();
 
-  const [formData, rawSetFormData] = useState<FormItem>(initialState);
+  const [formData, rawSetFormData] = useState<FormItem>({
+    ...initialState,
+    ...item,
+  });
+
   const setFormData = (next: Partial<FormItem>) =>
     rawSetFormData((current) => ({
       ...current,
@@ -21,12 +33,15 @@ export default function AddItemForm() {
 
   const [error, setError] = useState('');
 
-  const [mutate, { isLoading: isLoadingMutation }] = useAddItem();
+  const [addItem, { isLoading: isLoadingMutation }] = useAddItem();
+  const [editItem, { isLoading: isEditingMutation }] = useEditItem(item?._id);
+
+  const mutationLoading = isLoadingMutation || isEditingMutation;
 
   const submitForm = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (isLoadingMutation) {
+    if (mutationLoading) {
       return;
     }
 
@@ -37,9 +52,18 @@ export default function AddItemForm() {
       return;
     }
 
-    mutate(formData);
+    if (isAdd) {
+      addItem(formData);
+      setFormData(initialState);
+    } else {
+      try {
+        await editItem(formData);
+      } catch {
+        setError('Unable to update item');
+        return;
+      }
+    }
 
-    setFormData(initialState);
     setError('');
   };
 
@@ -53,6 +77,7 @@ export default function AddItemForm() {
       onSubmit={submitForm}
     >
       {error && <p>{error}</p>}
+      {mutationLoading && <p>Updating...</p>}
       <fieldset className="flex flex-col w-full mx-auto space-y-4">
         <input
           type="text"
@@ -84,6 +109,22 @@ export default function AddItemForm() {
         </select>
       </fieldset>
 
+      {isEdit && (
+        <select
+          className="border"
+          value={formData.status || ''}
+          onChange={(e) =>
+            setFormData({ status: e.target.value as ItemStatus })
+          }
+        >
+          {Object.entries(ItemStatus).map(([key, value]) => (
+            <option key={value} value={value}>
+              {key}
+            </option>
+          ))}
+        </select>
+      )}
+
       <div className="flex flex-row  mt-2">
         <button
           className="p-1 border bg-gray-400 shadow-sm flex-grow"
@@ -91,7 +132,7 @@ export default function AddItemForm() {
           onClick={submitForm}
           disabled={isLoadingMutation}
         >
-          Add
+          {isAdd ? 'Add' : 'Update'}
         </button>
       </div>
     </form>

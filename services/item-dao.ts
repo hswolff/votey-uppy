@@ -27,6 +27,21 @@ export async function getItemById(itemId: string): Promise<Item> {
   return (await collection.findOne(new ObjectId(itemId))) as Item;
 }
 
+export async function updateItemById(
+  itemId: string,
+  updates: Partial<Item>
+): Promise<Item> {
+  const db = await getDatabase();
+  const collection = db.collection('items');
+
+  return (await collection.findOneAndUpdate(
+    { _id: new ObjectId(itemId) },
+    {
+      $set: updates,
+    }
+  )) as Item;
+}
+
 export async function getVotesForUser(userId: string): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');

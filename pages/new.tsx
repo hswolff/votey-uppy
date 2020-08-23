@@ -1,9 +1,10 @@
-import AddItemForm from 'components/ManageItemForm';
+import ManageItemForm from 'components/ManageItemForm';
 
 export default function NewItem() {
   return (
     <div>
-      <AddItemForm />
+      <h1 className="text-center text-4xl">Add New Item</h1>
+      <ManageItemForm />
     </div>
   );
 }

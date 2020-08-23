@@ -11,12 +11,13 @@ export interface ItemVote {
   created: Date;
 }
 
-export type ItemStatus =
-  | 'pending'
-  | 'open'
-  | 'accepted'
-  | 'declined'
-  | 'completed';
+export enum ItemStatus {
+  Pending = 'pending',
+  Open = 'open',
+  Accepted = 'accepted',
+  Declined = 'declined',
+  Completed = 'completed',
+}
 
 export interface Item {
   _id: ObjectId;
@@ -37,11 +38,12 @@ export interface User {
   image: string;
   createdAt: Date;
   updatedAt: Date;
-  role: 'admin';
+  role?: 'admin';
 }
 
 export interface FormItem extends Pick<Item, 'title' | 'description'> {
   category: ItemCategory | null;
+  status?: ItemStatus;
 }
 
 export interface ItemQueryFilters {

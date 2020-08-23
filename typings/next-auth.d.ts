@@ -9,6 +9,7 @@ declare module 'next-auth/client' {
       email: string;
       image: string;
       _id: string;
+      role?: 'admin';
     };
     accessToken: string;
     expires: string;
@@ -30,7 +31,7 @@ declare module 'next-auth/client' {
     [key: string]: any;
   }
 
-  declare function useSession(): [Session, boolean];
+  declare function useSession(): [Session | null, boolean];
   declare function getSession(context: NextContext): Promise<Session | null>;
   declare function session(context: NextContext): Promise<Session | null>;
   declare function getProviders(

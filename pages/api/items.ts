@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import faker from 'faker';
-import { Item, ItemCategory, ItemQueryFilters } from 'services/data-types';
+import {
+  Item,
+  ItemCategory,
+  ItemQueryFilters,
+  ItemStatus,
+} from 'services/data-types';
 import { getDatabase } from 'services/database';
 import { getUserFromSession } from 'services/user-dao';
 import { getAllItems } from 'services/item-dao';
@@ -15,7 +20,7 @@ function generateItem({
     ItemCategory.Opinion,
     ItemCategory.Vlog,
   ]),
-  status = 'pending',
+  status = ItemStatus.Pending,
   createdBy = faker.random.uuid(),
 }: PartialItem = {}): PartialItem {
   return {

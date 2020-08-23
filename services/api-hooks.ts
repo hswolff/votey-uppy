@@ -2,8 +2,13 @@ import { useQuery, useMutation, queryCache, QueryConfig } from 'react-query';
 import queryString from 'query-string';
 import { Item, FormItem, ItemQueryFilters } from 'services/data-types';
 
-const defaultQueryFn = (requestPath: string) =>
-  fetch(requestPath).then((res) => res.json());
+const defaultQueryFn = (input: RequestInfo, init?: RequestInit) =>
+  fetch(input, init).then((res) => {
+    if (res.status >= 300) {
+      throw res;
+    }
+    return res.json();
+  });
 
 // queries
 
@@ -20,7 +25,7 @@ export function useItems<Result = Item[]>(
 }
 
 export function useItemById(itemId?: string) {
-  return useQuery(`/api/items/${itemId}`, defaultQueryFn, {
+  return useQuery<Item>(`/api/items/${itemId}`, defaultQueryFn, {
     enabled: itemId != null,
   });
 }
@@ -33,13 +38,29 @@ export function useMeData() {
 
 export function useAddItem() {
   const addItem = (body: FormItem) => {
-    return fetch('/api/items', {
+    return defaultQueryFn('/api/items', {
       method: 'POST',
       body: JSON.stringify(body),
     });
   };
 
   return useMutation(addItem, {
+    onSuccess() {
+      queryCache.invalidateQueries('/api/items');
+    },
+  });
+}
+
+export function useEditItem(itemId?: string) {
+  const editItem = (body: FormItem) => {
+    return defaultQueryFn(`/api/items/${itemId}`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+    });
+  };
+
+  return useMutation(editItem, {
+    throwOnError: true,
     onSuccess() {
       queryCache.invalidateQueries('/api/items');
     },
