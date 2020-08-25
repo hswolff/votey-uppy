@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+
 type ObjectId = string;
 
 export enum ItemCategory {
@@ -42,9 +44,22 @@ export interface User {
 }
 
 export interface FormItem extends Pick<Item, 'title' | 'description'> {
-  category: ItemCategory | null;
-  status?: ItemStatus;
+  category: ItemCategory | '';
+  status: ItemStatus | '';
 }
+
+export const formItemSchema: yup.ObjectSchema<FormItem> = yup
+  .object({
+    title: yup.string().required(),
+    description: yup.string().required(),
+    category: yup.string().defined().oneOf(Object.values(ItemCategory)),
+    status: yup
+      .string()
+      .defined()
+      .oneOf(Object.values(ItemStatus))
+      .default(ItemStatus.Pending),
+  })
+  .required();
 
 export interface ItemQueryFilters {
   category?: ItemCategory;

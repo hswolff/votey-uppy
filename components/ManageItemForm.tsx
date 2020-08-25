@@ -1,12 +1,26 @@
-import { useState } from 'react';
 import { useSession } from 'next-auth/client';
+import {
+  Formik,
+  Field,
+  Form,
+  ErrorMessage,
+  FormikHelpers,
+  FormikProps,
+} from 'formik';
 import { useAddItem, useEditItem } from 'services/api-hooks';
-import { FormItem, ItemCategory, Item, ItemStatus } from 'services/data-types';
+import {
+  FormItem,
+  ItemCategory,
+  Item,
+  ItemStatus,
+  formItemSchema,
+} from 'services/data-types';
 
-const initialState = {
+const initialState: FormItem = {
   title: '',
   description: '',
-  category: null,
+  category: '',
+  status: ItemStatus.Pending,
 };
 
 interface Props {
@@ -20,51 +34,24 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
 
   const [session] = useSession();
 
-  const [formData, rawSetFormData] = useState<FormItem>({
-    ...initialState,
-    ...item,
-  });
+  const [addItem] = useAddItem();
+  const [editItem] = useEditItem(item?._id);
 
-  const setFormData = (next: Partial<FormItem>) =>
-    rawSetFormData((current) => ({
-      ...current,
-      ...next,
-    }));
-
-  const [error, setError] = useState('');
-
-  const [addItem, { isLoading: isLoadingMutation }] = useAddItem();
-  const [editItem, { isLoading: isEditingMutation }] = useEditItem(item?._id);
-
-  const mutationLoading = isLoadingMutation || isEditingMutation;
-
-  const submitForm = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
-    if (mutationLoading) {
-      return;
-    }
-
-    setError('');
-
-    if (Object.values(formData).some((val) => !val)) {
-      setError('Please fill out form');
-      return;
-    }
-
+  const submitForm = async (
+    values: FormItem,
+    { resetForm }: FormikHelpers<FormItem>
+  ) => {
     if (isAdd) {
-      addItem(formData);
-      setFormData(initialState);
+      await addItem(values);
+      resetForm();
     } else {
       try {
-        await editItem(formData);
-      } catch {
-        setError('Unable to update item');
+        await editItem(values);
+      } catch (e) {
+        console.error(e);
         return;
       }
     }
-
-    setError('');
   };
 
   if (!session) {
@@ -72,69 +59,65 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
   }
 
   return (
-    <form
-      className="flex flex-col mx-auto max-w-sm border border-gray-400 rounded p-2"
+    <Formik
+      initialValues={{
+        ...initialState,
+        ...item,
+      }}
       onSubmit={submitForm}
+      validationSchema={formItemSchema}
     >
-      {error && <p>{error}</p>}
-      {mutationLoading && <p>Updating...</p>}
-      <fieldset className="flex flex-col w-full mx-auto space-y-4">
-        <input
-          type="text"
-          autoFocus
-          className="border p-2"
-          placeholder="title"
-          value={formData.title}
-          onChange={(e) => setFormData({ title: e.target.value })}
-        />
-        <textarea
-          className="border p-2 resize-none"
-          value={formData.description}
-          placeholder="description"
-          onChange={(e) => setFormData({ description: e.target.value })}
-        />
-        <select
-          className="border"
-          value={formData.category || ''}
-          onChange={(e) =>
-            setFormData({ category: e.target.value as ItemCategory })
-          }
-        >
-          <option value="">Select category</option>
-          {Object.entries(ItemCategory).map(([key, value]) => (
-            <option key={value} value={value}>
-              {key}
-            </option>
-          ))}
-        </select>
-      </fieldset>
+      {({ isSubmitting }: FormikProps<FormItem>) => (
+        <Form className="flex flex-col mx-auto max-w-sm border border-gray-400 rounded p-2">
+          <ErrorMessage name="title" />
+          <ErrorMessage name="description" />
+          <ErrorMessage name="category" />
+          <ErrorMessage name="status" />
+          {isSubmitting && <p>Updating...</p>}
+          <fieldset className="flex flex-col w-full mx-auto space-y-4">
+            <Field
+              name="title"
+              type="text"
+              autoFocus
+              className="border p-2"
+              placeholder="title"
+            />
+            <Field
+              as="textarea"
+              name="description"
+              className="border p-2 resize-none"
+            />
+            <Field name="category" as="select" className="border">
+              <option value="">Select category</option>
+              {Object.entries(ItemCategory).map(([key, value]) => (
+                <option key={value} value={value}>
+                  {key}
+                </option>
+              ))}
+            </Field>
+          </fieldset>
 
-      {isEdit && (
-        <select
-          className="border"
-          value={formData.status || ''}
-          onChange={(e) =>
-            setFormData({ status: e.target.value as ItemStatus })
-          }
-        >
-          {Object.entries(ItemStatus).map(([key, value]) => (
-            <option key={value} value={value}>
-              {key}
-            </option>
-          ))}
-        </select>
+          {isEdit && (
+            <Field name="status" as="select" className="border">
+              {Object.entries(ItemStatus).map(([key, value]) => (
+                <option key={value} value={value}>
+                  {key}
+                </option>
+              ))}
+            </Field>
+          )}
+
+          <div className="flex flex-row  mt-2">
+            <button
+              className="p-1 border bg-gray-400 shadow-sm flex-grow"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isAdd ? 'Add' : 'Update'}
+            </button>
+          </div>
+        </Form>
       )}
-
-      <div className="flex flex-row  mt-2">
-        <button
-          className="p-1 border bg-gray-400 shadow-sm flex-grow"
-          type="submit"
-          onClick={submitForm}
-          disabled={isLoadingMutation}
-        >
-          {isAdd ? 'Add' : 'Update'}
-        </button>
-      </div>
-    </form>
+    </Formik>
   );
 }

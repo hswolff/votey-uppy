@@ -34,6 +34,7 @@
 ### Milestone 3
 
 - [x] Revise Item design
+- [x] Switch to Formik
 - [ ] Revise Add new Item form
 - [ ] Revise Profile design
 - [ ] Revise About design
