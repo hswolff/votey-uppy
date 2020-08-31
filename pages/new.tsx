@@ -1,10 +1,11 @@
 import ManageItemForm from 'components/ManageItemForm';
+import Card, { Header } from 'components/Card';
 
 export default function NewItem() {
   return (
-    <div>
-      <h1 className="text-center text-4xl">Add New Item</h1>
+    <Card className="flex flex-col">
+      <Header>Add New Item</Header>
       <ManageItemForm />
-    </div>
+    </Card>
   );
 }

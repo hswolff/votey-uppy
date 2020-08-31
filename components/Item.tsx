@@ -4,6 +4,7 @@ import { Item as ItemInterface } from 'services/data-types';
 import { useAddVote, useRemoveVote } from 'services/api-hooks';
 import { useSession } from 'next-auth/client';
 import { DateTime } from 'luxon';
+import Card from './Card';
 
 export default function Item({ item }: { item: ItemInterface }) {
   const [session] = useSession();
@@ -18,10 +19,10 @@ export default function Item({ item }: { item: ItemInterface }) {
   const isLoading = addData.isLoading || removeData.isLoading;
 
   return (
-    <div className="border border-purple-200 hover:border-purple-300 rounded-md shadow p-4 flex flex-col sm:flex-row  ease-linear transition duration-150">
+    <Card className="flex flex-col sm:flex-row">
       <div
         data-testid="vote-wrapper"
-        className="flex flex-col justify-start mx-auto pr-4 text-center"
+        className="flex flex-col justify-start mr-4 pr-4 text-center border-r border-purple-100"
       >
         <button
           className={classNames(
@@ -61,8 +62,10 @@ export default function Item({ item }: { item: ItemInterface }) {
             </Link>
           )}
         </div>
-        <div className="py-2 whitespace-pre-line">{item.description}</div>
-        <div className="metadata text-gray-700 text-sm space-x-2">
+        <div className="opacity-75 py-2 whitespace-pre-line">
+          {item.description}
+        </div>
+        <div className="metadata opacity-50 text-sm space-x-2">
           <span>
             Created{' '}
             {DateTime.fromISO(item.created).toLocaleString(DateTime.DATE_FULL)}
@@ -73,7 +76,7 @@ export default function Item({ item }: { item: ItemInterface }) {
           <span>{item.status}</span>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

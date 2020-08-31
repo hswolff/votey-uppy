@@ -2,6 +2,7 @@ import { useRouter } from 'next/dist/client/router';
 import Item from 'components/Item';
 import { useItemById } from 'services/api-hooks';
 import ManageItemForm from 'components/ManageItemForm';
+import Card, { Header } from 'components/Card';
 
 export default function ItemPage() {
   const router = useRouter();
@@ -20,7 +21,12 @@ export default function ItemPage() {
   }
 
   if (isEdit && item) {
-    return <ManageItemForm mode="edit" item={item} />;
+    return (
+      <Card>
+        <Header>Edit Item</Header>
+        <ManageItemForm mode="edit" item={item} />
+      </Card>
+    );
   }
 
   return <div>{isSuccess && item && <Item item={item} />}</div>;
