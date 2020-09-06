@@ -15,6 +15,8 @@ import {
   ItemStatus,
   formItemSchema,
 } from 'services/data-types';
+import classNames from 'classnames';
+import Loading from './Loading';
 
 const initialState: FormItem = {
   title: '',
@@ -67,57 +69,126 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
       onSubmit={submitForm}
       validationSchema={formItemSchema}
     >
-      {({ isSubmitting }: FormikProps<FormItem>) => (
-        <Form className="flex flex-col mx-auto max-w-sm border border-gray-400 rounded p-2">
-          <ErrorMessage name="title" />
-          <ErrorMessage name="description" />
-          <ErrorMessage name="category" />
-          <ErrorMessage name="status" />
-          {isSubmitting && <p>Updating...</p>}
-          <fieldset className="flex flex-col w-full mx-auto space-y-4">
-            <Field
-              name="title"
-              type="text"
-              autoFocus
-              className="border p-2"
-              placeholder="title"
-            />
-            <Field
-              as="textarea"
-              name="description"
-              className="border p-2 resize-none"
-            />
-            <Field name="category" as="select" className="border">
-              <option value="">Select category</option>
-              {Object.entries(ItemCategory).map(([key, value]) => (
-                <option key={value} value={value}>
-                  {key}
-                </option>
-              ))}
-            </Field>
-          </fieldset>
+      {({ isSubmitting, isValid }: FormikProps<FormItem>) => {
+        const buttonDisabled = !isValid || isSubmitting;
+        return (
+          <Form className="space-y-4">
+            <Fieldset>
+              <Label htmlFor="title">
+                Title
+                <ErrorMessage component={LabelErrorMesage} name="title" />
+              </Label>
+              <Field
+                name="title"
+                id="title"
+                type="text"
+                autoFocus
+                className="border p-2 w-full"
+                placeholder="title"
+              />
+            </Fieldset>
 
-          {isEdit && (
-            <Field name="status" as="select" className="border">
-              {Object.entries(ItemStatus).map(([key, value]) => (
-                <option key={value} value={value}>
-                  {key}
-                </option>
-              ))}
-            </Field>
-          )}
+            <Fieldset>
+              <Label htmlFor="description">
+                Description
+                <ErrorMessage component={LabelErrorMesage} name="description" />
+              </Label>
+              <Field
+                as="textarea"
+                name="description"
+                id="description"
+                className="border p-2 resize-none w-full h-48"
+              />
+            </Fieldset>
 
-          <div className="flex flex-row  mt-2">
-            <button
-              className="p-1 border bg-gray-400 shadow-sm flex-grow"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isAdd ? 'Add' : 'Update'}
-            </button>
-          </div>
-        </Form>
-      )}
+            <Fieldset>
+              <Label htmlFor="category">
+                Category
+                <ErrorMessage component={LabelErrorMesage} name="category" />
+              </Label>
+              <Field
+                name="category"
+                id="category"
+                as="select"
+                className="border w-full p-2"
+              >
+                <option value="">---</option>
+                {Object.entries(ItemCategory).map(([key, value]) => (
+                  <option key={value} value={value}>
+                    {key}
+                  </option>
+                ))}
+              </Field>
+            </Fieldset>
+
+            <Fieldset>
+              {isEdit && (
+                <>
+                  <Label htmlFor="status">
+                    Status
+                    <ErrorMessage component={LabelErrorMesage} name="status" />
+                  </Label>
+                  <Field
+                    name="status"
+                    id="status"
+                    as="select"
+                    className="border w-full p-2"
+                  >
+                    {Object.entries(ItemStatus).map(([key, value]) => (
+                      <option key={value} value={value}>
+                        {key}
+                      </option>
+                    ))}
+                  </Field>
+                </>
+              )}
+            </Fieldset>
+
+            <div className="flex flex-row mt-2 justify-end">
+              <button
+                className={classNames(
+                  'text-purple-100  transition-colors ease-in-out duration-150 font-bold rounded py-2 px-4',
+                  {
+                    'bg-purple-600 hover:bg-purple-500': !buttonDisabled,
+                    'bg-purple-300  cursor-not-allowed': buttonDisabled,
+                  }
+                )}
+                type="submit"
+                disabled={buttonDisabled}
+              >
+                {isSubmitting ? (
+                  <Loading className="text-purple-100 w-8 h-8" />
+                ) : isAdd ? (
+                  'Add'
+                ) : (
+                  'Update'
+                )}
+              </button>
+            </div>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }
+
+const Label = (props: JSX.IntrinsicElements['label']) => (
+  <label
+    {...props}
+    className={classNames(
+      'leading-6 text-sm text-gray-700 flex flex-row justify-between',
+      props.className
+    )}
+  />
+);
+
+const LabelErrorMesage = (props: any) => (
+  <span {...props} className="text-red-600" />
+);
+
+const Fieldset = (props: JSX.IntrinsicElements['fieldset']) => (
+  <fieldset
+    {...props}
+    className={classNames('flex flex-col w-full mx-auto', props.className)}
+  />
+);

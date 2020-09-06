@@ -20,5 +20,5 @@ export default function Card({
 }
 
 export const Header = ({ children }: { children: React.ReactNode }) => (
-  <h1 className="text-center text-4xl">{children}</h1>
+  <h1 className="text-center text-4xl text-purple-800">{children}</h1>
 );

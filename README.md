@@ -35,7 +35,8 @@
 
 - [x] Revise Item design
 - [x] Switch to Formik
-- [ ] Revise Add new Item form
+- [x] Revise Add new Item form
+- [x] Revise Edit Item Form
 - [ ] Revise Profile design
 - [ ] Revise About design
 - [ ] Revise Layout and navigation design
