@@ -42,3 +42,10 @@ export const Header2 = ({
     {children}
   </h1>
 );
+
+export const Anchor = ({ className, ...props }: JSX.IntrinsicElements['a']) => (
+  <a
+    {...props}
+    className={classNames('text-purple-800 hover:text-purple-600', className)}
+  />
+);
