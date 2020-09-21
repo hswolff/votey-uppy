@@ -57,8 +57,11 @@
   - Can change their username
   - Make sure their username change reflects in Item
 - [ ] Make description field take in Markdown and render as markdown
+- [ ] Let admins set status when creating a new item
 
 ### Milestone 5
 
 - [ ] Save the date of when an item moves status
   - Such that you can see when an item was submitted and when it was completed
+- [ ] Support export to json functionality
+- [ ] Maybe support priority order of items within a list
