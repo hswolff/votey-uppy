@@ -37,7 +37,7 @@
 - [x] Switch to Formik
 - [x] Revise Add new Item form
 - [x] Revise Edit Item Form
-- [ ] Revise Profile design
+- [x] Revise Profile design
 - [ ] Revise About design
 - [ ] Revise Layout and navigation design
 - [ ] Add docs on Add New Item page telling users it's been added to the queue and will be evaluated before being accepted

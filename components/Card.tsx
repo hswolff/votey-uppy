@@ -19,6 +19,26 @@ export default function Card({
   );
 }
 
-export const Header = ({ children }: { children: React.ReactNode }) => (
-  <h1 className="text-center text-4xl text-purple-800">{children}</h1>
+export const Header = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <h1 className={classNames('text-center text-4xl text-purple-800', className)}>
+    {children}
+  </h1>
+);
+
+export const Header2 = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <h1 className={classNames('text-center text-2xl text-purple-800', className)}>
+    {children}
+  </h1>
 );
