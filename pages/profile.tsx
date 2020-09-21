@@ -1,5 +1,5 @@
 import { useMeData } from 'services/api-hooks';
-import Card, { Header, Header2 } from 'components/Card';
+import { Header, Header2, Card } from 'components/Typography';
 import ItemList from 'components/ItemList';
 import Loading from 'components/Loading';
 

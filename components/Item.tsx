@@ -4,7 +4,7 @@ import { Item as ItemInterface } from 'services/data-types';
 import { useAddVote, useRemoveVote } from 'services/api-hooks';
 import { useSession } from 'next-auth/client';
 import { DateTime } from 'luxon';
-import Card from './Card';
+import { Card } from './Typography';
 
 export default function Item({ item }: { item: ItemInterface }) {
   const [session] = useSession();

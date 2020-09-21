@@ -1,5 +1,5 @@
 import ManageItemForm from 'components/ManageItemForm';
-import Card, { Header } from 'components/Card';
+import { Header, Card } from 'components/Typography';
 import { signin, useSession } from 'next-auth/client';
 
 export default function NewItem() {

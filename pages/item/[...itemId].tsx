@@ -2,7 +2,7 @@ import { useRouter } from 'next/dist/client/router';
 import Item from 'components/Item';
 import { useItemById } from 'services/api-hooks';
 import ManageItemForm from 'components/ManageItemForm';
-import Card, { Header } from 'components/Card';
+import { Header, Card } from 'components/Typography';
 
 export default function ItemPage() {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import Card, { Header, Anchor } from 'components/Card';
+import { Header, Anchor, Card } from 'components/Typography';
 
 export default function About() {
   return (
