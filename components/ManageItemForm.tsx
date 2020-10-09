@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
 import {
   Formik,
@@ -39,6 +40,22 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
   const [addItem] = useAddItem();
   const [editItem] = useEditItem(item?._id);
 
+  const [justSubmittedItem, didJustSubmitItem] = useState(false);
+
+  useEffect(() => {
+    if (!justSubmittedItem) {
+      return;
+    }
+
+    const id = setTimeout(() => {
+      didJustSubmitItem(false);
+    }, 4e3);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }, [justSubmittedItem]);
+
   const submitForm = async (
     values: FormItem,
     { resetForm }: FormikHelpers<FormItem>
@@ -46,6 +63,7 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
     if (isAdd) {
       await addItem(values);
       resetForm();
+      didJustSubmitItem(true);
     } else {
       try {
         await editItem(values);
@@ -73,6 +91,13 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
         const buttonDisabled = !isValid || isSubmitting;
         return (
           <Form className="space-y-4">
+            {justSubmittedItem && (
+              <p className="py-2 leading-6 text-sm text-gray-800 rounded border border-purple-300 bg-purple-200 text-center">
+                Thanks for the idea! We&apos;ll review it shortly!
+                <br />
+                You&apos;ll see it appear on the homepage if it is accepted.
+              </p>
+            )}
             <Fieldset>
               <Label htmlFor="title">
                 Title
