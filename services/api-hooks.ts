@@ -1,6 +1,7 @@
 import { useQuery, useMutation, queryCache, QueryConfig } from 'react-query';
 import queryString from 'query-string';
 import { Item, FormItem, ItemQueryFilters } from 'services/data-types';
+import { MeApiResponse } from 'pages/api/me';
 
 const defaultQueryFn = (input: RequestInfo, init?: RequestInit) =>
   fetch(input, init).then((res) => {
@@ -31,7 +32,7 @@ export function useItemById(itemId?: string) {
 }
 
 export function useMeData() {
-  return useQuery('/api/me', defaultQueryFn);
+  return useQuery<MeApiResponse>('/api/me', defaultQueryFn);
 }
 
 // mutations

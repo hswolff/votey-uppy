@@ -34,11 +34,12 @@ export const Header = ({
 export const Header2 = ({
   children,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => (
-  <h1 className={classNames('text-center text-2xl text-purple-800', className)}>
+  ...props
+}: JSX.IntrinsicElements['h1']) => (
+  <h1
+    className={classNames('text-center text-2xl text-purple-800', className)}
+    {...props}
+  >
     {children}
   </h1>
 );

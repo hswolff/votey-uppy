@@ -40,7 +40,7 @@
 - [x] Revise Profile design
 - [x] Revise About design
 - [x] Add docs on Add New Item page telling users it's been added to the queue and will be evaluated before being accepted
-- [ ] Show pending items on user's profile page
+- [x] Show pending items on user's profile page
 
 ### Milestone 4
 
@@ -64,3 +64,4 @@
   - Such that you can see when an item was submitted and when it was completed
 - [ ] Support export to json functionality
 - [ ] Maybe support priority order of items within a list
+- [ ] Migrate to [Typegoose](https://github.com/typegoose/typegoose)

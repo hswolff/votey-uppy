@@ -62,6 +62,7 @@ export const formItemSchema: yup.ObjectSchema<FormItem> = yup
   .required();
 
 export interface ItemQueryFilters {
+  [key: string]: ItemCategory | string | ItemStatus | undefined;
   category?: ItemCategory;
   userId?: string;
   status?: ItemStatus;

@@ -42,6 +42,15 @@ export async function updateItemById(
   )) as Item;
 }
 
+export async function getItemsCreatedByUser(userId: string): Promise<Item[]> {
+  const db = await getDatabase();
+  const collection = db.collection('items');
+
+  return (await collection
+    .find({ createdBy: new ObjectId(userId) }, { sort: { _id: -1 } })
+    .toArray()) as Item[];
+}
+
 export async function getVotesForUser(userId: string): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');
