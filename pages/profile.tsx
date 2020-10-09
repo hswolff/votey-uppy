@@ -56,7 +56,7 @@ function Section({
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
 
-  if (items?.length === 0) {
+  if (!items || items.length === 0) {
     return null;
   }
 
