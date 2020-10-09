@@ -15,9 +15,10 @@ export default function Me() {
 
     const itemByStatus = data.created.reduce((acc, item) => {
       acc[item.status] = acc[item.status] || [];
-      acc[item.status].push(item);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      acc[item.status]!.push(item);
       return acc;
-    }, {} as Record<ItemStatus, Item[]>);
+    }, {} as Record<ItemStatus, Item[] | undefined>);
 
     return (
       <div className="space-y-8">
@@ -50,12 +51,12 @@ function Section({
   defaultExpanded = false,
 }: {
   title: string;
-  items: Item[];
+  items?: Item[];
   defaultExpanded?: boolean;
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
 
-  if (items.length === 0) {
+  if (items?.length === 0) {
     return null;
   }
 
