@@ -1,21 +1,23 @@
 import { getSession } from 'next-auth/client';
 import { getDatabase } from './database';
 import { NextApiRequest } from 'next';
-import { User } from './data-types';
+import { SessionUser, User } from './data-types';
 import { ObjectId } from 'mongodb';
 
 export async function getUserFromSession({
   req,
 }: {
   req: NextApiRequest;
-}): Promise<User> {
+}): Promise<SessionUser> {
   const session = await getSession({ req });
 
   if (!session) {
     throw new Error();
   }
 
-  return getUserFromId(session.user._id);
+  const sessionUser = (session.user as unknown) as SessionUser;
+
+  return getUserFromId(sessionUser._id);
 }
 
 export async function getUserFromId(userId: string): Promise<User> {

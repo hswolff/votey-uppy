@@ -1,7 +1,13 @@
 import { useQuery, useMutation, queryCache, QueryConfig } from 'react-query';
 import queryString from 'query-string';
-import { Item, FormItem, ItemQueryFilters } from 'services/data-types';
+import {
+  Item,
+  FormItem,
+  ItemQueryFilters,
+  SessionUser,
+} from 'services/data-types';
 import { MeApiResponse } from 'pages/api/me';
+import { Session, useSession } from 'next-auth/client';
 
 const defaultQueryFn = (input: RequestInfo, init?: RequestInit) =>
   fetch(input, init).then((res) => {
@@ -92,4 +98,14 @@ export function useRemoveVote(itemId: string) {
       },
     }
   );
+}
+
+export function useSessionUser(): [
+  SessionUser | undefined,
+  Session | null | undefined,
+  boolean
+] {
+  const [session, isLoadingSession] = useSession();
+
+  return [session?.user as SessionUser | undefined, session, isLoadingSession];
 }

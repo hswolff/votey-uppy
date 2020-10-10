@@ -1,5 +1,5 @@
 import { getDatabase } from './database';
-import { Item, User, ItemStatus } from './data-types';
+import { Item, ItemStatus, SessionUser } from './data-types';
 import { ObjectId } from 'mongodb';
 
 interface GetAllItems {
@@ -65,7 +65,7 @@ export async function addVoteToItem({
   user,
 }: {
   itemId: string;
-  user: User;
+  user: SessionUser;
 }) {
   const db = await getDatabase();
   const collection = db.collection('items');
@@ -102,7 +102,7 @@ export async function removeVoteFromItem({
   user,
 }: {
   itemId: string;
-  user: User;
+  user: SessionUser;
 }) {
   const db = await getDatabase();
   const collection = db.collection('items');

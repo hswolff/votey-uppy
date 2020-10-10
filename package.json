@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "types": "tsc"
   },
   "dependencies": {
     "classnames": "^2.2.6",
@@ -33,6 +34,7 @@
     "@types/faker": "^5.1.2",
     "@types/luxon": "^1.24.3",
     "@types/mongodb": "^3.5.25",
+    "@types/next-auth": "^3.1.11",
     "@types/node": "^14.0.27",
     "@types/react": "^16.9.43",
     "@types/yup": "^0.29.6",

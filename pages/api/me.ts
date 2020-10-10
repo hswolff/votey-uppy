@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getUserFromSession } from 'services/user-dao';
 import { getItemsCreatedByUser, getVotesForUser } from 'services/item-dao';
-import { Item, User } from 'services/data-types';
+import { Item, SessionUser } from 'services/data-types';
 
-export interface MeApiResponse extends User {
+export interface MeApiResponse extends SessionUser {
   votes: Item[];
   created: Item[];
 }

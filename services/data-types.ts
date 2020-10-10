@@ -43,6 +43,11 @@ export interface User {
   role?: 'admin';
 }
 
+export type SessionUser = Pick<
+  User,
+  'name' | 'image' | 'username' | '_id' | 'role'
+>;
+
 export interface FormItem extends Pick<Item, 'title' | 'description'> {
   category: ItemCategory | '';
   status: ItemStatus | '';

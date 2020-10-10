@@ -1,6 +1,5 @@
 import '../styles/tailwind.css';
 import type { AppProps } from 'next/app';
-// @ts-expect-error
 import { Provider } from 'next-auth/client';
 import Layout from 'components/Layout';
 

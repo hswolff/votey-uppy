@@ -1,17 +1,16 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { Item as ItemInterface } from 'services/data-types';
-import { useAddVote, useRemoveVote } from 'services/api-hooks';
-import { useSession } from 'next-auth/client';
+import { useAddVote, useRemoveVote, useSessionUser } from 'services/api-hooks';
 import { DateTime } from 'luxon';
 import { Card } from './Typography';
 
 export default function Item({ item }: { item: ItemInterface }) {
-  const [session] = useSession();
+  const [sessionUser] = useSessionUser();
 
   const hasVoted =
-    item.votes.find((vote) => vote.userId === session?.user._id) != null;
-  const isAdmin = session?.user.role === 'admin';
+    item.votes.find((vote) => vote.userId === sessionUser?._id) != null;
+  const isAdmin = sessionUser?.role === 'admin';
 
   const [addVote, addData] = useAddVote(item._id);
   const [removeVote, removeData] = useRemoveVote(item._id);

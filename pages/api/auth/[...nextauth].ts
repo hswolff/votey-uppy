@@ -1,14 +1,14 @@
-import NextAuth from 'next-auth';
+import { NextApiRequest, NextApiResponse } from 'next';
+import NextAuth, { InitOptions } from 'next-auth';
 import Providers from 'next-auth/providers';
+import { SessionUser } from 'services/data-types';
 import { getUserFromId, updateUser } from 'services/user-dao';
 
-const options = {
-  site: process.env.SITE || 'http://localhost:3000',
-
+const options: InitOptions = {
   providers: [
     Providers.GitHub({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: process.env.GITHUB_ID || '',
+      clientSecret: process.env.GITHUB_SECRET || '',
     }),
   ],
 
@@ -20,14 +20,16 @@ const options = {
 
   callbacks: {
     async session(session, user) {
+      const sessionUser: SessionUser = {
+        ...session.user,
+        _id: user.id,
+        username: user.username,
+        role: user.role,
+      };
+
       return Promise.resolve({
         ...session,
-        user: {
-          ...session.user,
-          _id: user.id,
-          username: user.username,
-          role: user.role,
-        },
+        user: sessionUser,
       });
     },
     async jwt(token, user, _account, profile) {
@@ -53,4 +55,5 @@ const options = {
   },
 };
 
-export default (req, res) => NextAuth(req, res, options);
+export default (req: NextApiRequest, res: NextApiResponse) =>
+  NextAuth(req, res, options);
