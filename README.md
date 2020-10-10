@@ -44,19 +44,19 @@
 
 ### Milestone 4
 
-- [ ] Show the username of who created the Item in the item UI
-- [ ] Let use edit their own Item while it's still 'pending'
+- [x] Let user edit their own Item while it's still 'pending'
 - [ ] Make homepage sortable in asc/desc order by:
   - Votes
   - Created
 - [ ] Filter items by: category, user that created it, status
-- [ ] Add pagination to list of Items
 - [ ] True mobile support
-- [ ] Let use edit their profile details
+- [ ] Let user edit their profile details
   - Can change their username
   - Make sure their username change reflects in Item
 - [ ] Make description field take in Markdown and render as markdown
 - [ ] Let admins set status when creating a new item
+- [ ] Show the username of who created the Item in the item UI
+- [ ] Add pagination to list of Items
 
 ### Milestone 5
 

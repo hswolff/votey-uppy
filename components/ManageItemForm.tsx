@@ -65,12 +65,7 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
       resetForm();
       didJustSubmitItem(true);
     } else {
-      try {
-        await editItem(values);
-      } catch (e) {
-        console.error(e);
-        return;
-      }
+      await editItem(values);
     }
   };
 

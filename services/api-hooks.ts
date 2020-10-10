@@ -67,7 +67,6 @@ export function useEditItem(itemId?: string) {
   };
 
   return useMutation(editItem, {
-    throwOnError: true,
     onSuccess() {
       queryCache.invalidateQueries('/api/items');
     },

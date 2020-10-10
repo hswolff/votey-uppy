@@ -4,13 +4,15 @@ import { Item as ItemInterface } from 'services/data-types';
 import { useAddVote, useRemoveVote, useSessionUser } from 'services/api-hooks';
 import { DateTime } from 'luxon';
 import { Card } from './Typography';
+import { canBeEdited } from 'services/ItemModel';
 
 export default function Item({ item }: { item: ItemInterface }) {
   const [sessionUser] = useSessionUser();
 
   const hasVoted =
     item.votes.find((vote) => vote.userId === sessionUser?._id) != null;
-  const isAdmin = sessionUser?.role === 'admin';
+
+  const canEdit = canBeEdited(item, sessionUser);
 
   const [addVote, addData] = useAddVote(item._id);
   const [removeVote, removeData] = useRemoveVote(item._id);
@@ -53,7 +55,7 @@ export default function Item({ item }: { item: ItemInterface }) {
           <Link href="/item/[...itemId]" as={`/item/${item._id}`}>
             <a>{item.title}</a>
           </Link>
-          {isAdmin && (
+          {canEdit && (
             <Link href="/item/[...itemId]" as={`/item/${item._id}/edit`}>
               <a>
                 <button className="absolute right-0">✎</button>

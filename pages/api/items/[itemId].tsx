@@ -1,26 +1,30 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { SessionUser } from 'services/data-types';
 import { getItemById, updateItemById } from 'services/item-dao';
+import { canBeEdited } from 'services/ItemModel';
 import { getUserFromSession } from 'services/user-dao';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const itemId = req.query.itemId as string;
 
+  const item = await getItemById(itemId);
+
   if (req.method === 'GET') {
-    return res.status(200).json(await getItemById(itemId));
+    return res.status(200).json(item);
   }
 
   if (req.method === 'PUT') {
-    let user;
-    let userIsAdmin = false;
+    let sessionUser: SessionUser;
     try {
-      user = await getUserFromSession({ req });
-      userIsAdmin = user.role === 'admin';
+      sessionUser = await getUserFromSession({ req });
     } catch {
       res.status(401).end();
       return;
     }
 
-    if (!userIsAdmin) {
+    const canEdit = canBeEdited(item, sessionUser);
+
+    if (!canEdit) {
       res.status(403).end();
       return;
     }
