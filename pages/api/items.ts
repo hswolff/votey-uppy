@@ -49,11 +49,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const query = (req.query as unknown) as ItemQueryFilters;
 
-    return res.status(200).json(
-      await getAllItems({
-        onlyPending: userIsAdmin && query.status === ItemStatus.Pending,
-      })
-    );
+    const filters: ItemQueryFilters = {};
+
+    const status = query.status as ItemStatus;
+    if (Object.values(ItemStatus).includes(status)) {
+      filters.status = status;
+
+      if (status === ItemStatus.Pending && !userIsAdmin) {
+        delete filters.status;
+      }
+    }
+
+    const category = query.category as ItemCategory;
+    if (Object.values(ItemCategory).includes(category)) {
+      filters.category = category;
+    }
+
+    return res.status(200).json(await getAllItems(filters));
   }
 
   if (req.method === 'POST') {

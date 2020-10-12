@@ -31,11 +31,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 const links = [
   {
     href: '/new',
-    text: 'new',
+    text: 'New',
   },
   {
     href: '/about',
-    text: 'about',
+    text: 'About',
   },
 ];
 
@@ -43,7 +43,7 @@ function Nav() {
   const [session] = useSession();
 
   return (
-    <nav className="flex flex-row max-w-sm mb-4 py-1 px-2 mx-auto justify-between text-purple-900">
+    <nav className="flex flex-row max-w-md mb-4 py-1 px-2 mx-auto justify-between text-purple-900">
       <ul className="flex flex-row space-x-2">
         {links.map((link) => (
           <li key={link.href}>
@@ -57,15 +57,15 @@ function Nav() {
         {session && (
           <li>
             <Link href="/profile">
-              <a>profile</a>
+              <a>Profile</a>
             </Link>
           </li>
         )}
         <li>
           {session ? (
-            <button onClick={() => signout()}>sign out</button>
+            <button onClick={() => signout()}>Sign Out</button>
           ) : (
-            <button onClick={() => signin('github')}>sign in</button>
+            <button onClick={() => signin('github')}>Sign In</button>
           )}
         </li>
       </ul>

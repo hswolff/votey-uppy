@@ -16,7 +16,6 @@ export interface ItemVote {
 export enum ItemStatus {
   Pending = 'Pending',
   Open = 'Open',
-  Accepted = 'Accepted',
   Declined = 'Declined',
   Completed = 'Completed',
 }

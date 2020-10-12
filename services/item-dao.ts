@@ -1,5 +1,5 @@
 import { getDatabase } from './database';
-import { Item, ItemStatus, SessionUser } from './data-types';
+import { Item, ItemQueryFilters, ItemStatus, SessionUser } from './data-types';
 import { ObjectId } from 'mongodb';
 
 const populateCreatedByAggregateStages = [
@@ -19,18 +19,20 @@ const populateCreatedByAggregateStages = [
   { $project: { createdBy_user: 0 } },
 ];
 
-interface GetAllItems {
-  onlyPending: boolean;
-}
 export async function getAllItems({
-  onlyPending = false,
-}: GetAllItems): Promise<Item[]> {
+  status,
+  category,
+}: ItemQueryFilters): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');
 
-  const query = onlyPending
-    ? { status: ItemStatus.Pending }
-    : { status: { $ne: ItemStatus.Pending } };
+  const query: Record<string, string> = {};
+
+  query.status = status != null ? status : ItemStatus.Open;
+
+  if (category) {
+    query.category = category;
+  }
 
   const items = await collection
     .aggregate([
