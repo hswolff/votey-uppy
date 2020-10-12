@@ -202,7 +202,7 @@ const Label = (props: JSX.IntrinsicElements['label']) => (
   />
 );
 
-const LabelErrorMesage = (props: any) => (
+const LabelErrorMesage = (props: JSX.IntrinsicElements['span']) => (
   <span {...props} className="text-red-600" />
 );
 

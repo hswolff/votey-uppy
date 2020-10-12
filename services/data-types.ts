@@ -31,6 +31,8 @@ export interface Item {
   createdBy: ObjectId;
   status: ItemStatus;
   votes: ItemVote[];
+  // Embed createdBy User document
+  user?: User;
 }
 
 export interface User {

@@ -70,6 +70,7 @@ export default function Item({ item }: { item: ItemInterface }) {
           <span>
             Created{' '}
             {DateTime.fromISO(item.created).toLocaleString(DateTime.DATE_FULL)}
+            {item.user && ` by ${item.user.username}`}
           </span>
           <span>&#8226;</span>
           <span className="inline-block">{item.category}</span>

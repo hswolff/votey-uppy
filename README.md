@@ -45,17 +45,17 @@
 ### Milestone 4
 
 - [x] Let user edit their own Item while it's still 'pending'
-- [ ] Make homepage sortable in asc/desc order by:
-  - Votes
-  - Created
-- [ ] Filter items by: category, user that created it, status
-- [ ] True mobile support
+- [x] Show the username of who created the Item in the item UI
 - [ ] Let user edit their profile details
   - Can change their username
   - Make sure their username change reflects in Item
 - [ ] Make description field take in Markdown and render as markdown
 - [ ] Let admins set status when creating a new item
-- [ ] Show the username of who created the Item in the item UI
+- [ ] Make homepage sortable in asc/desc order by:
+  - Votes
+  - Created
+- [ ] Filter items by: category, user that created it, status
+- [ ] True mobile support
 - [ ] Add pagination to list of Items
 
 ### Milestone 5
@@ -65,3 +65,4 @@
 - [ ] Support export to json functionality
 - [ ] Maybe support priority order of items within a list
 - [ ] Migrate to [Typegoose](https://github.com/typegoose/typegoose)
+- [ ] Show the users who voted for the item in a tooltip

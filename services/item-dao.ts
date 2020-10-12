@@ -2,6 +2,23 @@ import { getDatabase } from './database';
 import { Item, ItemStatus, SessionUser } from './data-types';
 import { ObjectId } from 'mongodb';
 
+const populateCreatedByAggregateStages = [
+  {
+    $lookup: {
+      from: 'users',
+      foreignField: '_id',
+      localField: 'createdBy',
+      as: 'createdBy_user',
+    },
+  },
+  {
+    $addFields: {
+      user: { $arrayElemAt: ['$createdBy_user', 0] },
+    },
+  },
+  { $project: { createdBy_user: 0 } },
+];
+
 interface GetAllItems {
   onlyPending: boolean;
 }
@@ -15,16 +32,33 @@ export async function getAllItems({
     ? { status: ItemStatus.Pending }
     : { status: { $ne: ItemStatus.Pending } };
 
-  return (await collection
-    .find(query, { sort: { _id: -1 } })
-    .toArray()) as Item[];
+  const items = await collection
+    .aggregate([
+      { $match: query },
+      { $sort: { _id: -1 } },
+      ...populateCreatedByAggregateStages,
+    ])
+    .toArray();
+
+  return items as Item[];
 }
 
 export async function getItemById(itemId: string): Promise<Item> {
   const db = await getDatabase();
   const collection = db.collection('items');
 
-  return (await collection.findOne(new ObjectId(itemId))) as Item;
+  const item = (await collection
+    .aggregate([
+      {
+        $match: {
+          _id: new ObjectId(itemId),
+        },
+      },
+      ...populateCreatedByAggregateStages,
+    ])
+    .toArray()) as Item[];
+
+  return item[0];
 }
 
 export async function updateItemById(
@@ -46,9 +80,19 @@ export async function getItemsCreatedByUser(userId: string): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');
 
-  return (await collection
-    .find({ createdBy: new ObjectId(userId) }, { sort: { _id: -1 } })
+  const item = (await collection
+    .aggregate([
+      {
+        $match: {
+          createdBy: new ObjectId(userId),
+        },
+      },
+      { $sort: { _id: -1 } },
+      ...populateCreatedByAggregateStages,
+    ])
     .toArray()) as Item[];
+
+  return item;
 }
 
 export async function getVotesForUser(userId: string): Promise<Item[]> {
