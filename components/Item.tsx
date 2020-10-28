@@ -52,11 +52,11 @@ export default function Item({ item }: { item: ItemInterface }) {
       </div>
       <div data-testid="item-content" className="content flex-grow">
         <div className="relative font-bold leading-4">
-          <Link href="/item/[...itemId]" as={`/item/${item._id}`}>
+          <Link href={`/item/${item._id}`}>
             <a>{item.title}</a>
           </Link>
           {canEdit && (
-            <Link href="/item/[...itemId]" as={`/item/${item._id}/edit`}>
+            <Link href={`/item/${item._id}/edit`}>
               <a>
                 <button className="absolute right-0">✎</button>
               </a>
