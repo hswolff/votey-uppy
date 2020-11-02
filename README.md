@@ -49,7 +49,7 @@
 - [x] Filter items by:
   - status
   - category
-- [ ] Make homepage sortable in asc/desc order by:
+- [x] Make homepage sortable in asc/desc order by:
   - Votes
   - Created
 - [ ] Let user edit their profile details

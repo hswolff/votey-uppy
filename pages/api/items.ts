@@ -65,6 +65,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       filters.category = category;
     }
 
+    filters.sort = query.sort;
+
     return res.status(200).json(await getAllItems(filters));
   }
 

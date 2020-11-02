@@ -72,4 +72,5 @@ export interface ItemQueryFilters {
   category?: ItemCategory;
   userId?: string;
   status?: ItemStatus;
+  sort?: 'votes' | '-votes' | 'createdAt' | '-createdAt';
 }

@@ -22,6 +22,7 @@ const populateCreatedByAggregateStages = [
 export async function getAllItems({
   status,
   category,
+  sort,
 }: ItemQueryFilters): Promise<Item[]> {
   const db = await getDatabase();
   const collection = db.collection('items');
@@ -34,10 +35,17 @@ export async function getAllItems({
     query.category = category;
   }
 
+  let sortQuery: Record<string, number> = { _id: -1 };
+  if (sort) {
+    const isDesc = sort[0] === '-';
+    const key = isDesc ? sort.slice(1) : sort;
+    sortQuery = { [key]: isDesc ? -1 : 1 };
+  }
+
   const items = await collection
     .aggregate([
       { $match: query },
-      { $sort: { _id: -1 } },
+      { $sort: sortQuery },
       ...populateCreatedByAggregateStages,
     ])
     .toArray();

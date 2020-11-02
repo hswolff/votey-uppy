@@ -49,11 +49,37 @@ export default function Home({ items }: HomeProps) {
           filterKey="category"
           items={[['All', 'All'], ...Object.entries(ItemCategory)]}
         />
+
+        <SortFilter currentSort={filters?.sort} />
       </div>
 
       {isSuccess && data && <ItemList items={data} />}
     </div>
   );
+}
+
+enum SortOptions {
+  Votes = 'votes',
+  Created = 'created',
+}
+function SortFilter({ currentSort }: { currentSort?: string }) {
+  let title = 'Sort';
+
+  const isDescending = currentSort && currentSort[0] === '-';
+  const normalizedSort =
+    currentSort && isDescending ? currentSort?.slice(1) : currentSort;
+
+  const items: [string, string][] = Object.entries(SortOptions).map(
+    ([key, value]) => {
+      const isCurrentSort = normalizedSort === value;
+      if (isCurrentSort) {
+        title = `Sort: ${key} (${isDescending ? 'desc' : 'asc'})`;
+      }
+      return [key, isCurrentSort ? value : `-${value}`];
+    }
+  );
+
+  return <Filter title={title} filterKey="sort" items={items} />;
 }
 
 export async function getStaticProps() {
