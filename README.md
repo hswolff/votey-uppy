@@ -54,7 +54,6 @@
   - Created
 - [x] Remove Admin page and replace with Pending support for admins on home page
 - [ ] Make description field take in Markdown and render as markdown
-- [ ] Let admins set status when creating a new item
 - [ ] True mobile support
 - [ ] Save the date of when an item moves status
   - Such that you can see when an item was submitted and when it was completed
@@ -68,3 +67,4 @@
 - [ ] Let user edit their profile details
   - Can change their username
   - Make sure their username change reflects in Item
+- [ ] Let admins set status when creating a new item

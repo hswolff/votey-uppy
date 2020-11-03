@@ -1,13 +1,13 @@
 import React from 'react';
 import ItemList from 'components/ItemList';
 import { useRouter } from 'next/router';
-import { useItems, useSessionUser } from 'services/api-hooks';
+import { useItems, useSessionUser } from 'lib/api-hooks';
 import {
   Item,
   ItemCategory,
   ItemQueryFilters,
   ItemStatus,
-} from 'services/data-types';
+} from 'lib/data-types';
 import Loading from 'components/Loading';
 import Filter from 'components/Filter';
 

@@ -5,10 +5,10 @@ import {
   ItemCategory,
   ItemQueryFilters,
   ItemStatus,
-} from 'services/data-types';
-import { getDatabase } from 'services/database';
-import { getUserFromSession } from 'services/user-dao';
-import { getAllItems } from 'services/item-dao';
+} from 'lib/data-types';
+import { getDatabase } from 'db/database';
+import { getUserFromSession } from 'db/user-dao';
+import { getAllItems } from 'db/item-dao';
 
 type PartialItem = Partial<Item>;
 

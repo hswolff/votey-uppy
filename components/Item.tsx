@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import { Item as ItemInterface } from 'services/data-types';
-import { useAddVote, useRemoveVote, useSessionUser } from 'services/api-hooks';
+import { Item as ItemInterface } from 'lib/data-types';
+import { useAddVote, useRemoveVote, useSessionUser } from 'lib/api-hooks';
 import { DateTime } from 'luxon';
 import { Card } from './Typography';
-import { canBeEdited } from 'services/ItemModel';
+import { canBeEdited } from 'db/ItemModel';
 
 export default function Item({ item }: { item: ItemInterface }) {
   const [sessionUser] = useSessionUser();

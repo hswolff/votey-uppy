@@ -1,5 +1,10 @@
 import { getDatabase } from './database';
-import { Item, ItemQueryFilters, ItemStatus, SessionUser } from './data-types';
+import {
+  Item,
+  ItemQueryFilters,
+  ItemStatus,
+  SessionUser,
+} from 'lib/data-types';
 import { ObjectId } from 'mongodb';
 
 const populateCreatedByAggregateStages = [

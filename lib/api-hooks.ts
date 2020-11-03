@@ -1,11 +1,6 @@
 import { useQuery, useMutation, queryCache, QueryConfig } from 'react-query';
 import queryString from 'query-string';
-import {
-  Item,
-  FormItem,
-  ItemQueryFilters,
-  SessionUser,
-} from 'services/data-types';
+import { Item, FormItem, ItemQueryFilters, SessionUser } from 'lib/data-types';
 import { MeApiResponse } from 'pages/api/me';
 import { Session, useSession } from 'next-auth/client';
 

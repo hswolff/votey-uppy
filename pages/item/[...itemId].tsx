@@ -1,6 +1,6 @@
 import { useRouter } from 'next/dist/client/router';
 import Item from 'components/Item';
-import { useItemById } from 'services/api-hooks';
+import { useItemById } from 'lib/api-hooks';
 import ManageItemForm from 'components/ManageItemForm';
 import { Header, Card } from 'components/Typography';
 

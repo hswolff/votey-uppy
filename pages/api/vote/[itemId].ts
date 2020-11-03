@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUserFromSession } from 'services/user-dao';
-import { addVoteToItem, removeVoteFromItem } from 'services/item-dao';
+import { getUserFromSession } from 'db/user-dao';
+import { addVoteToItem, removeVoteFromItem } from 'db/item-dao';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   let user;

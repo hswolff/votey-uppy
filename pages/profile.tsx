@@ -1,8 +1,8 @@
-import { useMeData } from 'services/api-hooks';
+import { useMeData } from 'lib/api-hooks';
 import { Header, Header2, Card } from 'components/Typography';
 import ItemList from 'components/ItemList';
 import Loading from 'components/Loading';
-import { Item, ItemStatus } from 'services/data-types';
+import { Item, ItemStatus } from 'lib/data-types';
 import { useState } from 'react';
 
 export default function Me() {

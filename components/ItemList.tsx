@@ -1,4 +1,4 @@
-import { Item as ItemInterface } from 'services/data-types';
+import { Item as ItemInterface } from 'lib/data-types';
 import Item from './Item';
 
 export default function ItemList({ items }: { items: ItemInterface[] }) {

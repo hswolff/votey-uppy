@@ -8,14 +8,14 @@ import {
   FormikHelpers,
   FormikProps,
 } from 'formik';
-import { useAddItem, useEditItem } from 'services/api-hooks';
+import { useAddItem, useEditItem } from 'lib/api-hooks';
 import {
   FormItem,
   ItemCategory,
   Item,
   ItemStatus,
   formItemSchema,
-} from 'services/data-types';
+} from 'lib/data-types';
 import classNames from 'classnames';
 import Loading from './Loading';
 

@@ -1,4 +1,4 @@
-import { Item, ItemStatus, SessionUser } from './data-types';
+import { Item, ItemStatus, SessionUser } from 'lib/data-types';
 
 export function canBeEdited(item: Item, sessionUser?: SessionUser | null) {
   if (!sessionUser) {

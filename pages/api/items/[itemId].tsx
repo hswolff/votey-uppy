@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { SessionUser } from 'services/data-types';
-import { getItemById, updateItemById } from 'services/item-dao';
-import { canBeEdited } from 'services/ItemModel';
-import { getUserFromSession } from 'services/user-dao';
+import { SessionUser } from 'lib/data-types';
+import { getItemById, updateItemById } from 'db/item-dao';
+import { canBeEdited } from 'db/ItemModel';
+import { getUserFromSession } from 'db/user-dao';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const itemId = req.query.itemId as string;

@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth, { InitOptions } from 'next-auth';
 import Providers from 'next-auth/providers';
-import { SessionUser } from 'services/data-types';
-import { getUserFromId, updateUser } from 'services/user-dao';
+import { SessionUser } from 'lib/data-types';
+import { getUserFromId, updateUser } from 'db/user-dao';
 
 const options: InitOptions = {
   providers: [

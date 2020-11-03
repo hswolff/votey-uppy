@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/client';
 import { getDatabase } from './database';
 import { NextApiRequest } from 'next';
-import { SessionUser, User } from './data-types';
+import { SessionUser, User } from 'lib/data-types';
 import { ObjectId } from 'mongodb';
 
 export async function getUserFromSession({
