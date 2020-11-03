@@ -63,9 +63,12 @@ export default function Item({ item }: { item: ItemInterface }) {
             </Link>
           )}
         </div>
-        <div className="opacity-75 py-2 whitespace-pre-line">
-          {item.description}
-        </div>
+        <div
+          className="prose opacity-75 py-2 overflow-scroll"
+          dangerouslySetInnerHTML={{
+            __html: item.descriptionHtml ?? item.description,
+          }}
+        />
         <div className="metadata opacity-50 text-sm space-x-2">
           <span>
             Created{' '}

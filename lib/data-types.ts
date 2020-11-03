@@ -24,6 +24,7 @@ export interface Item {
   _id: ObjectId;
   title: string;
   description: string;
+  descriptionHtml: string;
   created: string;
   updated: string;
   category: ItemCategory;

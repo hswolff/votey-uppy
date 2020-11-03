@@ -1,44 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import faker from 'faker';
-import {
-  Item,
-  ItemCategory,
-  ItemQueryFilters,
-  ItemStatus,
-} from 'lib/data-types';
-import { getDatabase } from 'db/database';
+import { ItemCategory, ItemQueryFilters, ItemStatus } from 'lib/data-types';
 import { getUserFromSession } from 'db/user-dao';
-import { getAllItems } from 'db/item-dao';
-
-type PartialItem = Partial<Item>;
-
-function generateItem({
-  title = faker.lorem.words(),
-  description = faker.lorem.paragraph(),
-  category = faker.random.arrayElement([
-    ItemCategory.Tutorial,
-    ItemCategory.Opinion,
-    ItemCategory.Vlog,
-  ]),
-  status = ItemStatus.Pending,
-  createdBy = faker.random.uuid(),
-}: PartialItem = {}): PartialItem {
-  return {
-    title,
-    description,
-    created: new Date().toISOString(),
-    updated: new Date().toISOString(),
-    category,
-    createdBy,
-    status,
-    votes: [],
-  };
-}
+import { createItem, getAllItems } from 'db/item-dao';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const db = await getDatabase();
-  const collection = db.collection('items');
-
   let user;
   let userIsAdmin = false;
   try {
@@ -83,14 +48,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    const newItem = generateItem({
+    const { result } = await createItem({
       title,
       description,
       category,
       createdBy: user._id,
     });
-
-    const { result } = await collection.insertOne(newItem);
 
     if (!result.ok) {
       res.status(500).json({ status: 'unable to add item' });

@@ -5,7 +5,8 @@ import {
   ItemStatus,
   SessionUser,
 } from 'lib/data-types';
-import { ObjectId } from 'mongodb';
+import { InsertOneWriteOpResult, ObjectId } from 'mongodb';
+import markdownToHtml from 'lib/markdownToHtml';
 
 const populateCreatedByAggregateStages = [
   {
@@ -76,6 +77,24 @@ export async function getItemById(itemId: string): Promise<Item> {
   return item[0];
 }
 
+export async function createItem(
+  newItem: Pick<Item, 'title' | 'description' | 'category' | 'createdBy'>
+): Promise<InsertOneWriteOpResult<Item>> {
+  const item: Omit<Item, '_id'> = {
+    ...newItem,
+    descriptionHtml: await markdownToHtml(newItem.description),
+    created: new Date().toISOString(),
+    updated: new Date().toISOString(),
+    status: ItemStatus.Pending,
+    votes: [],
+  };
+
+  const db = await getDatabase();
+  const collection = db.collection('items');
+
+  return await collection.insertOne(item);
+}
+
 export async function updateItemById(
   itemId: string,
   updates: Partial<Item>
@@ -86,7 +105,10 @@ export async function updateItemById(
   return (await collection.findOneAndUpdate(
     { _id: new ObjectId(itemId) },
     {
-      $set: updates,
+      $set: {
+        ...updates,
+        descriptionHtml: await markdownToHtml(updates?.description),
+      },
     }
   )) as Item;
 }
