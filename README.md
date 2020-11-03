@@ -52,20 +52,19 @@
 - [x] Make homepage sortable in asc/desc order by:
   - Votes
   - Created
-- [ ] Let user edit their profile details
-  - Can change their username
-  - Make sure their username change reflects in Item
+- [x] Remove Admin page and replace with Pending support for admins on home page
 - [ ] Make description field take in Markdown and render as markdown
 - [ ] Let admins set status when creating a new item
 - [ ] True mobile support
-- [ ] Add pagination to list of Items
+- [ ] Save the date of when an item moves status
+  - Such that you can see when an item was submitted and when it was completed
 
 ### Milestone 5
 
-- [ ] Save the date of when an item moves status
-  - Such that you can see when an item was submitted and when it was completed
+- [ ] Add pagination to list of Items
 - [ ] Support export to json functionality
 - [ ] Maybe support priority order of items within a list
 - [ ] Migrate to [Typegoose](https://github.com/typegoose/typegoose)
-- [ ] Show the users who voted for the item in a tooltip
-- [ ] Remove Admin page and replace with Pending support for admins on home page
+- [ ] Let user edit their profile details
+  - Can change their username
+  - Make sure their username change reflects in Item

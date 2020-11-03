@@ -1,7 +1,7 @@
 import React from 'react';
 import ItemList from 'components/ItemList';
 import { useRouter } from 'next/router';
-import { useItems } from 'services/api-hooks';
+import { useItems, useSessionUser } from 'services/api-hooks';
 import {
   Item,
   ItemCategory,
@@ -17,6 +17,8 @@ interface HomeProps {
 
 export default function Home({ items }: HomeProps) {
   const router = useRouter();
+  const [sessionUser] = useSessionUser();
+  const isAdmin = sessionUser?.role === 'admin';
 
   const filters: ItemQueryFilters | undefined =
     Object.entries(router.query).length === 0
@@ -40,7 +42,8 @@ export default function Home({ items }: HomeProps) {
           title={filters?.status ?? ItemStatus.Open}
           filterKey="status"
           items={Object.entries(ItemStatus).filter(
-            ([, value]) => ![ItemStatus.Pending].includes(value)
+            ([, value]) =>
+              ![isAdmin ? undefined : ItemStatus.Pending].includes(value)
           )}
         />
 
