@@ -41,7 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    const { title, description, category } = JSON.parse(req.body);
+    const { title, description, category, status } = JSON.parse(req.body);
 
     if (!title || !description || !category) {
       res.status(400).json({ status: 'malformed content' });
@@ -53,6 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       description,
       category,
       createdBy: user._id,
+      status: userIsAdmin && status,
     });
 
     if (!result.ok) {

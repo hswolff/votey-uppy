@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/client';
 import {
   Formik,
   Field,
@@ -8,7 +7,7 @@ import {
   FormikHelpers,
   FormikProps,
 } from 'formik';
-import { useAddItem, useEditItem } from 'lib/api-hooks';
+import { useAddItem, useEditItem, useSessionUser } from 'lib/api-hooks';
 import {
   FormItem,
   ItemCategory,
@@ -35,7 +34,8 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
   const isAdd = mode === 'add';
   const isEdit = mode === 'edit';
 
-  const [session] = useSession();
+  const [sessionUser] = useSessionUser();
+  const isAdmin = sessionUser?.role === 'admin';
 
   const [addItem] = useAddItem();
   const [editItem] = useEditItem(item?._id);
@@ -70,7 +70,7 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
     didJustSubmitItem(true);
   };
 
-  if (!session) {
+  if (!sessionUser) {
     return null;
   }
 
@@ -148,7 +148,7 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
             </Fieldset>
 
             <Fieldset>
-              {isEdit && (
+              {isAdmin && (
                 <>
                   <Label htmlFor="status">
                     Status

@@ -78,14 +78,17 @@ export async function getItemById(itemId: string): Promise<Item> {
 }
 
 export async function createItem(
-  newItem: Pick<Item, 'title' | 'description' | 'category' | 'createdBy'>
+  newItem: Pick<
+    Item,
+    'title' | 'description' | 'category' | 'createdBy' | 'status'
+  >
 ): Promise<InsertOneWriteOpResult<Item>> {
   const item: Omit<Item, '_id'> = {
     ...newItem,
     descriptionHtml: await markdownToHtml(newItem.description),
     created: new Date().toISOString(),
     updated: new Date().toISOString(),
-    status: ItemStatus.Pending,
+    status: newItem.status || ItemStatus.Pending,
     votes: [],
   };
 

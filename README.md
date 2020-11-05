@@ -69,4 +69,4 @@
 - [ ] Let user edit their profile details
   - Can change their username
   - Make sure their username change reflects in Item
-- [ ] Let admins set status when creating a new item
+- [x] Let admins set status when creating a new item

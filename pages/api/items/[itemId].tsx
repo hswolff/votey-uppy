@@ -29,6 +29,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
+    const isAdmin = sessionUser.role === 'admin';
+
     const updates = JSON.parse(req.body);
 
     ['_id', 'created', 'votes', 'createdBy'].forEach((key) => {
@@ -44,6 +46,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     updates.updated = new Date();
+
+    // Don't allow non-admins to change the status of an Item
+    if (!isAdmin) {
+      delete updates.status;
+    }
 
     return res.status(200).json(await updateItemById(itemId, updates));
   }
