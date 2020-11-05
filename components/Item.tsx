@@ -19,6 +19,9 @@ export default function Item({ item }: { item: ItemInterface }) {
 
   const isLoading = addData.isLoading || removeData.isLoading;
 
+  const createdDate =
+    typeof item.created === 'string' ? new Date(item.created) : item.created;
+
   return (
     <Card className="flex flex-row">
       <div
@@ -72,7 +75,9 @@ export default function Item({ item }: { item: ItemInterface }) {
         <div className="metadata opacity-50 text-sm space-x-2">
           <span>
             Created{' '}
-            {DateTime.fromISO(item.created).toLocaleString(DateTime.DATE_FULL)}
+            {DateTime.fromJSDate(createdDate).toLocaleString(
+              DateTime.DATE_FULL
+            )}
             {item.user && ` by ${item.user.username}`}
           </span>
           <span>&#8226;</span>

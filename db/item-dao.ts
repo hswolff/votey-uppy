@@ -83,13 +83,25 @@ export async function createItem(
     'title' | 'description' | 'category' | 'createdBy' | 'status'
   >
 ): Promise<InsertOneWriteOpResult<Item>> {
+  const dateNow = new Date();
+
+  const status = newItem.status || ItemStatus.Pending;
+
   const item: Omit<Item, '_id'> = {
     ...newItem,
     descriptionHtml: await markdownToHtml(newItem.description),
-    created: new Date().toISOString(),
-    updated: new Date().toISOString(),
-    status: newItem.status || ItemStatus.Pending,
+    created: dateNow,
+    updated: dateNow,
+    status,
     votes: [],
+    changes: {
+      status: [
+        {
+          timestamp: dateNow,
+          newValue: status,
+        },
+      ],
+    },
   };
 
   const db = await getDatabase();
@@ -102,17 +114,39 @@ export async function updateItemById(
   itemId: string,
   updates: Partial<Item>
 ): Promise<Item> {
+  const itemObjectId = new ObjectId(itemId);
+
   const db = await getDatabase();
   const collection = db.collection('items');
 
-  return (await collection.findOneAndUpdate(
-    { _id: new ObjectId(itemId) },
-    {
-      $set: {
-        ...updates,
-        descriptionHtml: await markdownToHtml(updates?.description),
+  const { changes, ...newUpdates } = updates;
+
+  const queryUpdates: Record<string, any> = {
+    $set: {
+      ...newUpdates,
+      descriptionHtml: await markdownToHtml(updates?.description),
+    },
+  };
+
+  const existingItem = await collection.findOne<Item>({ _id: itemObjectId });
+
+  // Only add a new status change when it actually changes.
+  if (
+    existingItem &&
+    existingItem.changes.status[existingItem.changes.status.length - 1]
+      .newValue !== newUpdates.status
+  ) {
+    queryUpdates['$push'] = {
+      'changes.status': {
+        timestamp: new Date(),
+        newValue: updates.status,
       },
-    }
+    };
+  }
+
+  return (await collection.findOneAndUpdate(
+    { _id: itemObjectId },
+    queryUpdates
   )) as Item;
 }
 

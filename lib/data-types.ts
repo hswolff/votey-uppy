@@ -25,12 +25,18 @@ export interface Item {
   title: string;
   description: string;
   descriptionHtml: string;
-  created: string;
-  updated: string;
+  created: Date;
+  updated: Date;
   category: ItemCategory;
   createdBy: ObjectId;
   status: ItemStatus;
   votes: ItemVote[];
+  changes: {
+    status: Array<{
+      timestamp: Date;
+      newValue: ItemStatus;
+    }>;
+  };
   // Embed createdBy User document
   user?: User;
 }
