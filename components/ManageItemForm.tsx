@@ -63,10 +63,11 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
     if (isAdd) {
       await addItem(values);
       resetForm();
-      didJustSubmitItem(true);
     } else {
       await editItem(values);
     }
+
+    didJustSubmitItem(true);
   };
 
   if (!session) {
@@ -86,11 +87,16 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
         const buttonDisabled = !isValid || isSubmitting;
         return (
           <Form className="space-y-4">
-            {justSubmittedItem && (
+            {justSubmittedItem && isAdd && (
               <p className="py-2 leading-6 text-sm text-gray-800 rounded border border-purple-300 bg-purple-200 text-center">
                 Thanks for the idea! We&apos;ll review it shortly!
                 <br />
                 You&apos;ll see it appear on the homepage if it is accepted.
+              </p>
+            )}
+            {justSubmittedItem && isEdit && (
+              <p className="py-2 leading-6 text-sm text-gray-800 rounded border border-purple-300 bg-purple-200 text-center">
+                Updated!
               </p>
             )}
             <Fieldset>
