@@ -20,7 +20,7 @@ export default function Item({ item }: { item: ItemInterface }) {
   const isLoading = addData.isLoading || removeData.isLoading;
 
   return (
-    <Card className="flex flex-col sm:flex-row">
+    <Card className="flex flex-row">
       <div
         data-testid="vote-wrapper"
         className="flex flex-col justify-start mr-4 pr-4 text-center border-r border-purple-100"

@@ -5,7 +5,7 @@ import { signin, signout } from 'next-auth/client';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto my-4 max-w-xl">
+    <div className="mx-4 sm:mx-auto my-4 max-w-xl">
       <Head>
         <title>votey-uppy</title>
         <link rel="icon" href="/favicon.ico" />
