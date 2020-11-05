@@ -63,7 +63,9 @@ export function useEditItem(itemId?: string) {
 
   return useMutation(editItem, {
     onSuccess() {
+      queryCache.invalidateQueries(`/api/items/${itemId}`);
       queryCache.invalidateQueries('/api/items');
+      queryCache.invalidateQueries('/api/me');
     },
   });
 }
@@ -74,6 +76,7 @@ export function useAddVote(itemId: string) {
     (e_: unknown) => fetch(`/api/vote/${itemId}`, { method: 'POST' }),
     {
       onSuccess() {
+        queryCache.invalidateQueries(`/api/items/${itemId}`);
         queryCache.invalidateQueries('/api/items');
         queryCache.invalidateQueries('/api/me');
       },
@@ -87,6 +90,7 @@ export function useRemoveVote(itemId: string) {
     (e_: unknown) => fetch(`/api/vote/${itemId}`, { method: 'DELETE' }),
     {
       onSuccess() {
+        queryCache.invalidateQueries(`/api/items/${itemId}`);
         queryCache.invalidateQueries('/api/items');
         queryCache.invalidateQueries('/api/me');
       },

@@ -55,11 +55,11 @@
 - [x] Remove Admin page and replace with Pending support for admins on home page
 - [x] Make description field take in Markdown and render as markdown
 - [x] True mobile support
+- [x] Upvoting on individual item page doesn't update count
 - [ ] Save the date of when an item moves status
   - Such that you can see when an item was submitted and when it was completed
 - [ ] Migrate to [Typegoose](https://github.com/typegoose/typegoose)
 - [ ] Cleanup \_id and id usage
-- [ ] Upvoting on individual item page doesn't update count
 
 ### Milestone 5
 
