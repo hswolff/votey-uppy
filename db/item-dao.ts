@@ -1,10 +1,5 @@
 import { getDatabase } from './database';
-import {
-  Item,
-  ItemQueryFilters,
-  ItemStatus,
-  SessionUser,
-} from 'lib/data-types';
+import { Item, ItemQueryFilters, ItemStatus, User } from 'lib/data-types';
 import { InsertOneWriteOpResult, ObjectId } from 'mongodb';
 import markdownToHtml from 'lib/markdownToHtml';
 
@@ -183,13 +178,13 @@ export async function addVoteToItem({
   user,
 }: {
   itemId: string;
-  user: SessionUser;
+  user: User;
 }) {
   const db = await getDatabase();
   const collection = db.collection('items');
 
   const itemObjectId = new ObjectId(itemIdString);
-  const userObjectId = new ObjectId(user._id);
+  const userObjectId = new ObjectId(user.id);
 
   const existingVote = await collection
     .find({
@@ -220,13 +215,13 @@ export async function removeVoteFromItem({
   user,
 }: {
   itemId: string;
-  user: SessionUser;
+  user: User;
 }) {
   const db = await getDatabase();
   const collection = db.collection('items');
 
   const itemObjectId = new ObjectId(itemIdString);
-  const userObjectId = new ObjectId(user._id);
+  const userObjectId = new ObjectId(user.id);
 
   const existingVote = await collection
     .find({

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { SessionUser } from 'lib/data-types';
+import { User } from 'lib/data-types';
 import { getItemById, updateItemById } from 'db/item-dao';
 import { canBeEdited } from 'db/ItemModel';
 import { getUserFromSession } from 'db/user-dao';
@@ -14,22 +14,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'PUT') {
-    let sessionUser: SessionUser;
+    let user: User;
     try {
-      sessionUser = await getUserFromSession({ req });
+      user = await getUserFromSession({ req });
     } catch {
       res.status(401).end();
       return;
     }
 
-    const canEdit = canBeEdited(item, sessionUser);
+    const canEdit = canBeEdited(item, user);
 
     if (!canEdit) {
       res.status(403).end();
       return;
     }
 
-    const isAdmin = sessionUser.role === 'admin';
+    const isAdmin = user.role === 'admin';
 
     const updates = JSON.parse(req.body);
 

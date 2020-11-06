@@ -19,8 +19,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'GET') {
-    const itemsVotedFor = await getVotesForUser(user._id);
-    const itemsCreatedBy = await getItemsCreatedByUser(user._id);
+    const itemsVotedFor = await getVotesForUser(user.id);
+    const itemsCreatedBy = await getItemsCreatedByUser(user.id);
 
     const response: MeApiResponse = {
       ...user,
