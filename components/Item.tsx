@@ -67,7 +67,7 @@ export default function Item({ item }: { item: ItemInterface }) {
           )}
         </div>
         <div
-          className="prose opacity-75 py-2 overflow-scroll"
+          className="prose py-2 overflow-scroll"
           dangerouslySetInnerHTML={{
             __html: item.descriptionHtml ?? item.description,
           }}

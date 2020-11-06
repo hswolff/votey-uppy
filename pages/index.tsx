@@ -29,10 +29,6 @@ export default function Home({ items }: HomeProps) {
     initialData: filters ? undefined : items,
   });
 
-  if (!(isSuccess && data)) {
-    return null;
-  }
-
   return (
     <div>
       {isLoading && <Loading className="mx-auto text-purple-700 opacity-50" />}
@@ -56,7 +52,10 @@ export default function Home({ items }: HomeProps) {
         <SortFilter currentSort={filters?.sort} />
       </div>
 
-      {isSuccess && data && <ItemList items={data} />}
+      {data && <ItemList items={data} />}
+      {data?.length === 0 && (
+        <p className="text-center my-4 opacity-75">No items found</p>
+      )}
     </div>
   );
 }
