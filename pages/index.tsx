@@ -25,7 +25,7 @@ export default function Home({ items }: HomeProps) {
       ? undefined
       : (router.query as ItemQueryFilters);
 
-  const { data, isSuccess, isLoading } = useItems(filters, {
+  const { data, isLoading } = useItems(filters, {
     initialData: filters ? undefined : items,
   });
 
