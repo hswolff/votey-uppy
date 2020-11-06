@@ -50,7 +50,9 @@ export default function Home({ items }: HomeProps) {
         <SortFilter currentSort={filters?.sort} />
       </div>
 
-      {isLoading && <Loading className="mx-auto text-purple-700 opacity-50" />}
+      {isLoading && (
+        <Loading className="mx-auto my-4 text-purple-700 opacity-50" />
+      )}
 
       {data && <ItemList items={data} />}
       {data?.length === 0 && (
