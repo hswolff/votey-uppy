@@ -9,7 +9,7 @@ export function canBeEdited(item: Item, sessionUser?: SessionUser | null) {
 
   // On backend these ObjectIds are instances and not just strings
   const itemCreatedByViewer =
-    item.createdBy.toString() === sessionUser.id.toString();
+    item.createdBy.toString() === sessionUser._id.toString();
 
   const isPending = item.status === ItemStatus.Pending;
 

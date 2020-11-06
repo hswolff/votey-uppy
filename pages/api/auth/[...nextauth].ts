@@ -22,7 +22,7 @@ const options: InitOptions = {
     async session(session, user) {
       const sessionUser: SessionUser = {
         ...session.user,
-        id: user.id,
+        _id: user.id,
         username: user.username,
         role: user.role,
       };

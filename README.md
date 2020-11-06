@@ -58,7 +58,8 @@
 - [x] Upvoting on individual item page doesn't update count
 - [x] Save the date of when an item moves status
   - Such that you can see when an item was submitted and when it was completed
-- [x] Cleanup user.\_id and user.id usage
+- [ ] Migrate to [Typegoose](https://github.com/typegoose/typegoose)
+- [ ] Cleanup \_id and id usage
 
 ### Milestone 5
 

@@ -1,5 +1,6 @@
 import * as yup from 'yup';
-import { ObjectId } from 'mongodb';
+
+type ObjectId = string;
 
 export enum ItemCategory {
   Tutorial = 'Tutorial',
@@ -42,7 +43,6 @@ export interface Item {
 
 export interface User {
   _id: ObjectId;
-  id: string;
   name: string;
   username: string;
   image: string;
@@ -53,7 +53,7 @@ export interface User {
 
 export type SessionUser = Pick<
   User,
-  'name' | 'image' | 'username' | 'id' | 'role'
+  'name' | 'image' | 'username' | '_id' | 'role'
 >;
 
 export interface FormItem extends Pick<Item, 'title' | 'description'> {

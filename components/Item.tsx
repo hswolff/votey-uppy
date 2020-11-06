@@ -10,13 +10,12 @@ export default function Item({ item }: { item: ItemInterface }) {
   const [sessionUser] = useSessionUser();
 
   const hasVoted =
-    item.votes.find((vote) => vote.userId.toString() === sessionUser?.id) !=
-    null;
+    item.votes.find((vote) => vote.userId === sessionUser?._id) != null;
 
   const canEdit = canBeEdited(item, sessionUser);
 
-  const [addVote, addData] = useAddVote(item._id.toString());
-  const [removeVote, removeData] = useRemoveVote(item._id.toString());
+  const [addVote, addData] = useAddVote(item._id);
+  const [removeVote, removeData] = useRemoveVote(item._id);
 
   const isLoading = addData.isLoading || removeData.isLoading;
 
