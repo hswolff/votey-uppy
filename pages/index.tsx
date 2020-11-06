@@ -31,8 +31,6 @@ export default function Home({ items }: HomeProps) {
 
   return (
     <div>
-      {isLoading && <Loading className="mx-auto text-purple-700 opacity-50" />}
-
       <div className="flex items-center justify-center pb-1 space-x-4">
         <Filter
           title={filters?.status ?? ItemStatus.Open}
@@ -51,6 +49,8 @@ export default function Home({ items }: HomeProps) {
 
         <SortFilter currentSort={filters?.sort} />
       </div>
+
+      {isLoading && <Loading className="mx-auto text-purple-700 opacity-50" />}
 
       {data && <ItemList items={data} />}
       {data?.length === 0 && (
