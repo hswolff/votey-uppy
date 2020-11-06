@@ -62,11 +62,11 @@
 
 ### Milestone 5
 
-- [ ] Migrate to [Typegoose](https://github.com/typegoose/typegoose)
+- [x] Let admins set status when creating a new item
 - [ ] Add pagination to list of Items
 - [ ] Support export to json functionality
 - [ ] Maybe support priority order of items within a list
 - [ ] Let user edit their profile details
   - Can change their username
   - Make sure their username change reflects in Item
-- [x] Let admins set status when creating a new item
+- [ ] Migrate to [Typegoose](https://github.com/typegoose/typegoose)
