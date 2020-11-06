@@ -1,23 +1,21 @@
 import { getSession } from 'next-auth/client';
 import { getDatabase } from './database';
 import { NextApiRequest } from 'next';
-import { SessionUser, User } from 'lib/data-types';
+import { User } from 'lib/data-types';
 import { ObjectId } from 'mongodb';
 
 export async function getUserFromSession({
   req,
 }: {
   req: NextApiRequest;
-}): Promise<SessionUser> {
+}): Promise<User> {
   const session = await getSession({ req });
 
   if (!session) {
     throw new Error();
   }
 
-  const sessionUser = (session.user as unknown) as SessionUser;
-
-  return getUserFromId(sessionUser._id);
+  return getUserFromId(session.user.id);
 }
 
 export async function getUserFromId(userId: string): Promise<User> {
@@ -30,6 +28,8 @@ export async function getUserFromId(userId: string): Promise<User> {
   if (!user) {
     throw new Error('No user found');
   }
+
+  user.id = user._id.toString();
 
   return user;
 }
@@ -48,5 +48,9 @@ export async function updateUser(
       { returnOriginal: false }
     );
 
-  return opResult.value as User;
+  const updatedUser = opResult.value as User;
+
+  updatedUser.id = updatedUser._id.toString();
+
+  return updatedUser;
 }

@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { ObjectId } from 'mongodb';
 import { ItemCategory, ItemQueryFilters, ItemStatus } from 'lib/data-types';
 import { getUserFromSession } from 'db/user-dao';
 import { createItem, getAllItems } from 'db/item-dao';
@@ -52,7 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       title,
       description,
       category,
-      createdBy: user._id,
+      createdBy: new ObjectId(user.id),
       status: userIsAdmin && status,
     });
 
