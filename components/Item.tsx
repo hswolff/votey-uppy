@@ -54,8 +54,11 @@ export default function Item({ item }: { item: ItemInterface }) {
           {item.votes.length}
         </div>
       </div>
-      <div data-testid="item-content" className="content flex-grow">
-        <div className="relative font-bold leading-4">
+      <div
+        data-testid="item-content"
+        className="content flex-grow overflow-auto"
+      >
+        <div className="relative font-bold leading-4 break-words">
           <Link href={`/item/${item._id}`}>
             <a>{item.title}</a>
           </Link>
@@ -68,7 +71,7 @@ export default function Item({ item }: { item: ItemInterface }) {
           )}
         </div>
         <div
-          className="prose py-2 break-all"
+          className="prose py-2 break-words"
           dangerouslySetInnerHTML={{
             __html: item.descriptionHtml ?? item.description,
           }}
