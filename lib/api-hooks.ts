@@ -47,6 +47,7 @@ export function useAddItem() {
   };
 
   return useMutation(addItem, {
+    throwOnError: true,
     onSuccess() {
       queryCache.invalidateQueries('/api/items');
     },
@@ -62,6 +63,7 @@ export function useEditItem(itemId?: string) {
   };
 
   return useMutation(editItem, {
+    throwOnError: true,
     onSuccess() {
       queryCache.invalidateQueries(`/api/items/${itemId}`);
       queryCache.invalidateQueries('/api/items');

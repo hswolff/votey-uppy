@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { title, description, category, status } = JSON.parse(req.body);
 
-    if (!title || !description || !(category in ItemCategory)) {
+    if (!title || !(category in ItemCategory)) {
       res.status(400).json({ status: 'malformed content' });
       return;
     }

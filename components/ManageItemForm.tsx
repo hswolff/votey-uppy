@@ -40,7 +40,9 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
   const [addItem] = useAddItem();
   const [editItem] = useEditItem(item?._id.toString());
 
-  const [justSubmittedItem, didJustSubmitItem] = useState(false);
+  const [justSubmittedItem, didJustSubmitItem] = useState<
+    'success' | 'error' | undefined
+  >(undefined);
 
   useEffect(() => {
     if (!justSubmittedItem) {
@@ -48,7 +50,7 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
     }
 
     const id = setTimeout(() => {
-      didJustSubmitItem(false);
+      didJustSubmitItem(undefined);
     }, 4e3);
 
     return () => {
@@ -60,14 +62,18 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
     values: FormItem,
     { resetForm }: FormikHelpers<FormItem>
   ) => {
-    if (isAdd) {
-      await addItem(values);
-      resetForm();
-    } else {
-      await editItem(values);
-    }
+    try {
+      if (isAdd) {
+        await addItem(values);
+        resetForm();
+      } else {
+        await editItem(values);
+      }
 
-    didJustSubmitItem(true);
+      didJustSubmitItem('success');
+    } catch (error) {
+      didJustSubmitItem('error');
+    }
   };
 
   if (!sessionUser) {
@@ -85,16 +91,22 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
     >
       {({ isSubmitting, isValid }: FormikProps<FormItem>) => {
         const buttonDisabled = !isValid || isSubmitting;
+        const justSubmittedIsSuccess = justSubmittedItem === 'success';
         return (
           <Form className="space-y-4">
-            {justSubmittedItem && isAdd && (
+            {justSubmittedItem === 'error' && (
+              <p className="py-2 leading-6 text-sm text-gray-800 rounded border border-red-300 bg-red-200 text-center">
+                Oops! Something went wrong!
+              </p>
+            )}
+            {justSubmittedIsSuccess && isAdd && (
               <p className="py-2 leading-6 text-sm text-gray-800 rounded border border-purple-300 bg-purple-200 text-center">
                 Thanks for the idea! We&apos;ll review it shortly!
                 <br />
                 You&apos;ll see it appear on the homepage if it is accepted.
               </p>
             )}
-            {justSubmittedItem && isEdit && (
+            {justSubmittedIsSuccess && isEdit && (
               <p className="py-2 leading-6 text-sm text-gray-800 rounded border border-purple-300 bg-purple-200 text-center">
                 Updated!
               </p>
