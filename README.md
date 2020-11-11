@@ -1,5 +1,24 @@
 # votey-uppy
 
+[Check out the live working version!](https://votey-uppy.vercel.app/)
+
+Votey-uppy is an app to collect and vote on ideas.
+
+The code is being developed in the open so follow along with the progress here!
+
+## Development
+
+1. Checkout the repo
+1. `yarn` to install node dependencies
+1. Start a MongoDB server
+1. Create your local environment file:
+   1. `cp .env.template .env.local`
+   2. Create a [GitHub OAuth application](https://github.com/settings/applications/new)
+      1. Homepage URL: `http://localhost:3000/`
+      2. Authorization callback URL: `http://localhost:3000/api/auth/callback/github`
+   3. Fill in your GitHub ID and secret into your local environment file
+1. `yarn dev` to start the Next.js
+
 ## Roadmap
 
 ### Milestone 1
