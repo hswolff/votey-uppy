@@ -36,7 +36,7 @@ export async function getAllItems({
     query.category = category;
   }
 
-  let sortQuery: Record<string, number> = { _id: -1 };
+  let sortQuery: Record<string, number> = { votes: -1 };
   if (sort) {
     const isDesc = sort[0] === '-';
     const key = isDesc ? sort.slice(1) : sort;
