@@ -15,9 +15,16 @@ const populateCreatedByAggregateStages = [
   {
     $addFields: {
       user: { $arrayElemAt: ['$createdBy_user', 0] },
+      voteCount: {
+        $size: '$votes',
+      },
     },
   },
-  { $project: { createdBy_user: 0 } },
+  {
+    $project: {
+      createdBy_user: 0,
+    },
+  },
 ];
 
 export async function getAllItems({
@@ -36,18 +43,18 @@ export async function getAllItems({
     query.category = category;
   }
 
-  let sortQuery: Record<string, number> = { votes: -1 };
+  let sortQuery: Record<string, number> = { voteCount: -1 };
   if (sort) {
     const isDesc = sort[0] === '-';
     const key = isDesc ? sort.slice(1) : sort;
-    sortQuery = { [key]: isDesc ? -1 : 1 };
+    sortQuery = { [key === 'votes' ? 'voteCount' : key]: isDesc ? -1 : 1 };
   }
 
   const items = await collection
     .aggregate([
       { $match: query },
-      { $sort: sortQuery },
       ...populateCreatedByAggregateStages,
+      { $sort: sortQuery },
     ])
     .toArray();
 
@@ -156,8 +163,8 @@ export async function getItemsCreatedByUser(userId: string): Promise<Item[]> {
           createdBy: new ObjectId(userId),
         },
       },
-      { $sort: { _id: -1 } },
       ...populateCreatedByAggregateStages,
+      { $sort: { _id: -1 } },
     ])
     .toArray()) as Item[];
 
