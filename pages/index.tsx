@@ -76,10 +76,12 @@ function SortFilter({ currentSort }: { currentSort?: string }) {
   const items: [string, string][] = Object.entries(SortOptions).map(
     ([key, value]) => {
       const isCurrentSort = normalizedSort === value;
+      let nextValue: string = value;
       if (isCurrentSort) {
         title = `Sort: ${key} (${isDescending ? 'desc' : 'asc'})`;
+        nextValue = isDescending ? value : `-${value}`;
       }
-      return [key, isCurrentSort ? value : `-${value}`];
+      return [key, nextValue];
     }
   );
 
