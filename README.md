@@ -82,6 +82,7 @@ The code is being developed in the open so follow along with the progress here!
 ### Milestone 5
 
 - [x] Let admins set status when creating a new item
+- [ ] Let admin delete an item
 - [ ] Add pagination to list of Items
 - [ ] Support export to json functionality
 - [ ] Maybe support priority order of items within a list
