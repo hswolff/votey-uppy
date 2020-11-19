@@ -1,6 +1,7 @@
 import React from 'react';
 import ItemList from 'components/ItemList';
 import { useRouter } from 'next/router';
+import { getAllItems } from 'db/item-dao';
 import { useItems, useSessionUser } from 'lib/api-hooks';
 import {
   Item,
@@ -89,12 +90,11 @@ function SortFilter({ currentSort }: { currentSort?: string }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${process.env.SITE}/api/items`);
-  const items = await res.json();
+  const items = await getAllItems({});
 
   return {
     props: {
-      items,
+      items: JSON.parse(JSON.stringify(items)),
     },
     revalidate: 30,
   };
