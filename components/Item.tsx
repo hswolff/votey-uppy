@@ -1,7 +1,12 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { Item as ItemInterface } from 'lib/data-types';
-import { useAddVote, useRemoveVote, useSessionUser } from 'lib/api-hooks';
+import {
+  useAddVote,
+  useDeleteItem,
+  useRemoveVote,
+  useSessionUser,
+} from 'lib/api-hooks';
 import { DateTime } from 'luxon';
 import { Card } from './Typography';
 import { canBeEdited } from 'db/ItemModel';
@@ -14,9 +19,12 @@ export default function Item({ item }: { item: ItemInterface }) {
     null;
 
   const canEdit = canBeEdited(item, sessionUser);
+  const isAdmin = sessionUser?.role === 'admin';
 
-  const [addVote, addData] = useAddVote(item._id.toString());
-  const [removeVote, removeData] = useRemoveVote(item._id.toString());
+  const stringItemId = item._id.toString();
+  const [addVote, addData] = useAddVote(stringItemId);
+  const [removeVote, removeData] = useRemoveVote(stringItemId);
+  const [deleteItem] = useDeleteItem(stringItemId);
 
   const isLoading = addData.isLoading || removeData.isLoading;
 
@@ -63,11 +71,29 @@ export default function Item({ item }: { item: ItemInterface }) {
             <a>{item.title}</a>
           </Link>
           {canEdit && (
-            <Link href={`/item/${item._id}/edit`}>
-              <a>
-                <button className="absolute right-0">✎</button>
-              </a>
-            </Link>
+            <div className="absolute right-0 top-0 space-x-2">
+              {isAdmin && (
+                <button
+                  onClick={async () => {
+                    if (!confirm('Are you sure?')) {
+                      return;
+                    }
+                    const result = await deleteItem();
+                    if (result === true) {
+                      alert('Successfully deleted');
+                      window.location.assign('/');
+                    }
+                  }}
+                >
+                  🅧
+                </button>
+              )}
+              <Link href={`/item/${item._id}/edit`}>
+                <a>
+                  <button className="">✎</button>
+                </a>
+              </Link>
+            </div>
           )}
         </div>
         <div

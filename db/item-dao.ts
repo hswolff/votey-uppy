@@ -252,3 +252,14 @@ export async function removeVoteFromItem({
     }
   );
 }
+
+export async function deleteItem(id: string): Promise<boolean> {
+  const db = await getDatabase();
+  const collection = db.collection('items');
+
+  const itemObjectId = new ObjectId(id);
+
+  const response = await collection.deleteOne({ _id: itemObjectId });
+
+  return response.result.ok === 1;
+}

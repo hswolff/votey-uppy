@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'lib/data-types';
-import { getItemById, updateItemById } from 'db/item-dao';
+import { deleteItem, getItemById, updateItemById } from 'db/item-dao';
 import { canBeEdited } from 'db/ItemModel';
 import { getUserFromSession } from 'db/user-dao';
 
@@ -53,6 +53,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     return res.status(200).json(await updateItemById(itemId, updates));
+  }
+
+  if (req.method === 'DELETE') {
+    let user: User;
+    try {
+      user = await getUserFromSession({ req });
+    } catch {
+      res.status(401).end();
+      return;
+    }
+
+    const isAdmin = user.role === 'admin';
+
+    if (!isAdmin) {
+      res.status(403).end();
+      return;
+    }
+
+    return res.status(200).json(await deleteItem(itemId));
   }
 
   res.end();

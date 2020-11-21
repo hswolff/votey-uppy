@@ -72,6 +72,23 @@ export function useEditItem(itemId?: string) {
   });
 }
 
+export function useDeleteItem(itemId?: string) {
+  const deleteItem = () => {
+    return defaultQueryFn(`/api/items/${itemId}`, {
+      method: 'DELETE',
+    });
+  };
+
+  return useMutation(deleteItem, {
+    throwOnError: true,
+    onSuccess() {
+      queryCache.invalidateQueries(`/api/items/${itemId}`);
+      queryCache.invalidateQueries('/api/items');
+      queryCache.invalidateQueries('/api/me');
+    },
+  });
+}
+
 export function useAddVote(itemId: string) {
   return useMutation(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
