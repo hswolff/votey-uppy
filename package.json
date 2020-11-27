@@ -11,13 +11,15 @@
   },
   "dependencies": {
     "@headlessui/react": "^0.2.0",
-    "@tailwindcss/typography": "^0.2.0",
+    "@tailwindcss/typography": "^0.3.1",
+    "autoprefixer": "^10.0.3",
     "classnames": "^2.2.6",
     "formik": "^2.1.5",
     "luxon": "^1.25.0",
     "mongodb": "^3.6.0",
     "next": "^10.0.0",
     "next-auth": "^3.1.0",
+    "postcss": "^8.1.10",
     "postcss-flexbugs-fixes": "^5.0.0",
     "postcss-preset-env": "^6.7.0",
     "query-string": "^6.13.1",
@@ -27,7 +29,7 @@
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
     "remark-linkify-regex": "^1.0.0",
-    "tailwindcss": "^1.6.0",
+    "tailwindcss": "^2.0.1",
     "yup": "^0.29.3"
   },
   "peerOptionalDependencies": {
