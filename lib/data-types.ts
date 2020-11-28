@@ -51,10 +51,7 @@ export interface User {
   role?: 'admin';
 }
 
-export type SessionUser = Pick<
-  User,
-  'name' | 'image' | 'username' | 'id' | 'role'
->;
+export type SessionUser = Pick<User, 'username' | 'id' | 'role'>;
 
 export interface FormItem extends Pick<Item, 'title' | 'description'> {
   category: ItemCategory | '';

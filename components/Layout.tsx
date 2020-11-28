@@ -43,7 +43,7 @@ function Nav() {
   const [session] = useSession();
 
   return (
-    <nav className="flex flex-row max-w-md mb-4 py-1 px-2 mx-auto justify-between text-purple-900">
+    <nav className="flex flex-row max-w-md my-4 py-1 px-2 mx-auto justify-between text-purple-900">
       <ul className="flex flex-row space-x-2">
         {links.map((link) => (
           <li key={link.href}>
