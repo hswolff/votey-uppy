@@ -19,6 +19,26 @@ The code is being developed in the open so follow along with the progress here!
    3. Fill in your GitHub ID and secret into your local environment file
 1. `yarn dev` to start the Next.js
 
+### Make a user an admin
+
+votey-uppy has a very basic role based system. There's only two roles: no role and admin.
+
+To make a user an admin you need to run the following MongoDB queries:
+
+```sh
+# Connect to voteyUppy database
+mongo voteyUppy
+
+# Find the ObjectId of the user
+db.users.find({ username: 'USERNAME_HERE' });
+
+# Set the user's role
+db.users.updateOne({_id: ObjectId("OBJECT_ID_HERE")}, { $set: { role: 'admin' }})
+
+# (Optional) Remove the user's role
+db.users.updateOne({_id: ObjectId("OBJECT_ID_HERE")}, { $unset: { role: '' }})
+```
+
 ## Roadmap
 
 ### Milestone 1
