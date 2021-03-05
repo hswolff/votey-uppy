@@ -22,9 +22,9 @@ export default function Item({ item }: { item: ItemInterface }) {
   const isAdmin = sessionUser?.role === 'admin';
 
   const stringItemId = item._id.toString();
-  const [addVote, addData] = useAddVote(stringItemId);
-  const [removeVote, removeData] = useRemoveVote(stringItemId);
-  const [deleteItem] = useDeleteItem(stringItemId);
+  const { mutate: addVote, ...addData } = useAddVote(stringItemId);
+  const { mutate: removeVote, ...removeData } = useRemoveVote(stringItemId);
+  const { mutateAsync: deleteItem } = useDeleteItem(stringItemId);
 
   const isLoading = addData.isLoading || removeData.isLoading;
 

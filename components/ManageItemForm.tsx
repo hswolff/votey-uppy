@@ -37,8 +37,8 @@ export default function ManageItemForm({ mode = 'add', item }: Props) {
   const [sessionUser] = useSessionUser();
   const isAdmin = sessionUser?.role === 'admin';
 
-  const [addItem] = useAddItem();
-  const [editItem] = useEditItem(item?._id.toString());
+  const { mutateAsync: addItem } = useAddItem();
+  const { mutateAsync: editItem } = useEditItem(item?._id.toString());
 
   const [justSubmittedItem, didJustSubmitItem] = useState<
     'success' | 'error' | undefined
