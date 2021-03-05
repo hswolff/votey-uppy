@@ -58,7 +58,7 @@ export interface FormItem extends Pick<Item, 'title' | 'description'> {
   status: ItemStatus | '';
 }
 
-export const formItemSchema: yup.ObjectSchema<FormItem> = yup
+export const formItemSchema = yup
   .object({
     title: yup.string().required(),
     description: yup.string(),
