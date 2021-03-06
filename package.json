@@ -10,8 +10,8 @@
     "types": "tsc"
   },
   "dependencies": {
-    "@headlessui/react": "^0.2.0",
-    "@tailwindcss/typography": "^0.3.1",
+    "@headlessui/react": "^0.3.1",
+    "@tailwindcss/typography": "^0.4.0",
     "autoprefixer": "^10.0.3",
     "classnames": "^2.2.6",
     "formik": "^2.2.5",
@@ -25,12 +25,12 @@
     "query-string": "^6.13.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-query": "^2.26.3",
+    "react-query": "^3.12.0",
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
     "remark-linkify-regex": "^1.0.0",
     "tailwindcss": "^2.0.1",
-    "yup": "^0.31.0"
+    "yup": "^0.32.9"
   },
   "peerOptionalDependencies": {
     "mongodb": "^3.6.0"

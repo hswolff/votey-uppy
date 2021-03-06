@@ -1,10 +1,19 @@
-import { useQuery, useMutation, queryCache, QueryConfig } from 'react-query';
+import {
+  useQuery,
+  useMutation,
+  UseQueryOptions,
+  QueryFunctionContext,
+  useQueryClient,
+  QueryClient,
+} from 'react-query';
 import queryString from 'query-string';
 import { Item, FormItem, ItemQueryFilters, SessionUser } from 'lib/data-types';
 import { MeApiResponse } from 'pages/api/me';
 import { Session, useSession } from 'next-auth/client';
 
-const defaultQueryFn = (input: RequestInfo, init?: RequestInit) =>
+export const queryClient = new QueryClient();
+
+const fetchWrapper = (input: RequestInfo, init?: RequestInit) =>
   fetch(input, init).then((res) => {
     if (res.status >= 300) {
       throw res;
@@ -12,11 +21,14 @@ const defaultQueryFn = (input: RequestInfo, init?: RequestInit) =>
     return res.json();
   });
 
+const defaultQueryFn = (context: QueryFunctionContext) =>
+  fetchWrapper(context.queryKey as string);
+
 // queries
 
 export function useItems<Result = Item[]>(
   filters?: ItemQueryFilters,
-  options?: QueryConfig<Result>
+  options?: UseQueryOptions<Result, string, Result>
 ) {
   const query = filters ? `?${queryString.stringify(filters)}` : '';
   return useQuery<Result, string>(
@@ -40,78 +52,85 @@ export function useMeData() {
 
 export function useAddItem() {
   const addItem = (body: FormItem) => {
-    return defaultQueryFn('/api/items', {
+    return fetchWrapper('/api/items', {
       method: 'POST',
       body: JSON.stringify(body),
     });
   };
 
+  const queryClient = useQueryClient();
+
   return useMutation(addItem, {
-    throwOnError: true,
     onSuccess() {
-      queryCache.invalidateQueries('/api/items');
+      queryClient.invalidateQueries('/api/items');
     },
   });
 }
 
 export function useEditItem(itemId?: string) {
   const editItem = (body: FormItem) => {
-    return defaultQueryFn(`/api/items/${itemId}`, {
+    return fetchWrapper(`/api/items/${itemId}`, {
       method: 'PUT',
       body: JSON.stringify(body),
     });
   };
 
+  const queryClient = useQueryClient();
+
   return useMutation(editItem, {
-    throwOnError: true,
     onSuccess() {
-      queryCache.invalidateQueries(`/api/items/${itemId}`);
-      queryCache.invalidateQueries('/api/items');
-      queryCache.invalidateQueries('/api/me');
+      queryClient.invalidateQueries(`/api/items/${itemId}`);
+      queryClient.invalidateQueries('/api/items');
+      queryClient.invalidateQueries('/api/me');
     },
   });
 }
 
 export function useDeleteItem(itemId?: string) {
   const deleteItem = () => {
-    return defaultQueryFn(`/api/items/${itemId}`, {
+    return fetchWrapper(`/api/items/${itemId}`, {
       method: 'DELETE',
     });
   };
 
+  const queryClient = useQueryClient();
+
   return useMutation(deleteItem, {
-    throwOnError: true,
     onSuccess() {
-      queryCache.invalidateQueries(`/api/items/${itemId}`);
-      queryCache.invalidateQueries('/api/items');
-      queryCache.invalidateQueries('/api/me');
+      queryClient.invalidateQueries(`/api/items/${itemId}`);
+      queryClient.invalidateQueries('/api/items');
+      queryClient.invalidateQueries('/api/me');
     },
   });
 }
 
 export function useAddVote(itemId: string) {
+  const queryClient = useQueryClient();
+
   return useMutation(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (e_: unknown) => fetch(`/api/vote/${itemId}`, { method: 'POST' }),
     {
       onSuccess() {
-        queryCache.invalidateQueries(`/api/items/${itemId}`);
-        queryCache.invalidateQueries('/api/items');
-        queryCache.invalidateQueries('/api/me');
+        queryClient.invalidateQueries(`/api/items/${itemId}`);
+        queryClient.invalidateQueries('/api/items');
+        queryClient.invalidateQueries('/api/me');
       },
     }
   );
 }
 
 export function useRemoveVote(itemId: string) {
+  const queryClient = useQueryClient();
+
   return useMutation(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (e_: unknown) => fetch(`/api/vote/${itemId}`, { method: 'DELETE' }),
     {
       onSuccess() {
-        queryCache.invalidateQueries(`/api/items/${itemId}`);
-        queryCache.invalidateQueries('/api/items');
-        queryCache.invalidateQueries('/api/me');
+        queryClient.invalidateQueries(`/api/items/${itemId}`);
+        queryClient.invalidateQueries('/api/items');
+        queryClient.invalidateQueries('/api/me');
       },
     }
   );
